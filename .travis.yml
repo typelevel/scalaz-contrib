@@ -1,0 +1,6 @@
+language: scala
+jdk:
+  - oraclejdk7
+
+install: /bin/true
+script: ./sbt ";clean;compile;test"
