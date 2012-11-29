@@ -31,7 +31,7 @@ trait Spec
     }
   }
 
-  override implicit val defaultParameters = Parameters(defaultValues.updated(maxSize, 5).updated(minTestsOk, 33))
+  override implicit val defaultParameters = Parameters(defaultValues.updated(maxSize, 10).updated(minTestsOk, 100))
 
   def checkAll(name: String, props: Properties)(implicit p: Parameters) {
     addFragments(name + " " + props.name,

@@ -24,6 +24,10 @@ class TryTest extends Spec {
   checkAll(plus.laws[Try])
   checkAll(equal.laws[Try[Int]])
 
+  "IsoFunctor is identity" ! prop { (t: Try[Int]) =>
+    t must be_===(tryIsoFunctor.from[Int](tryIsoFunctor.to[Int](t)))
+  }
+
 }
 
 // vim: expandtab:ts=2:sw=2
