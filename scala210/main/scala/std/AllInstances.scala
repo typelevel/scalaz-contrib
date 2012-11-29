@@ -3,6 +3,7 @@ package std
 
 trait AllInstances
   extends FutureInstances
+  with TryInstances
 
 object AllInstances extends AllInstances
 
