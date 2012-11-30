@@ -16,7 +16,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 class FutureTest extends Spec {
-  import scalaz.contrib.std.ScalazFuture._
+
+  import scalaz.contrib.std.scalaFuture._
 
   val duration: Duration = 1.seconds
 
@@ -31,9 +32,10 @@ class FutureTest extends Spec {
   // Scope these away from the rest as Copointed[Future] is a little evil.
   // Should fail to compile by default: implicitly[Copointed[Future]]
   {
-    implicit val copointedFuture: Copointed[Future] = futureCopointed(duration)
+    implicit val cm: Comonad[Future] = futureComonad(duration)
     checkAll(comonad.laws[Future])
   }
+
 }
 
 // vim: expandtab:ts=2:sw=2
