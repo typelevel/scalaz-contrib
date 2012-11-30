@@ -11,7 +11,7 @@ trait TryInstances1 {
 
   type EitherThrowable[A] = Throwable \/ A
 
-  private[scalaz] def tryIsoFunctor = new IsoFunctorTemplate[Try, EitherThrowable] {
+  def tryIsoFunctor = new IsoFunctorTemplate[Try, EitherThrowable] {
 
     def to[A](fa: Try[A]): Throwable \/ A = fa match {
       case util.Failure(e) => e.left
@@ -42,7 +42,7 @@ trait TryInstances1 {
 
 trait TryInstances extends TryInstances1 {
 
-  private[scalaz] def tryIsoSet[A] = new IsoSet[Try[A], Throwable \/ A] {
+  def tryIsoSet[A] = new IsoSet[Try[A], Throwable \/ A] {
     def to = tryIsoFunctor.to[A]
     def from = tryIsoFunctor.from[A]
   }
