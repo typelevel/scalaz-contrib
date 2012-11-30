@@ -41,8 +41,7 @@ trait FutureInstances extends FutureInstances1 {
 
 
   /**
-   * Requires explicit usage as the use of `Await.result`.
-   * Can throw an exception, which is inherently bad.
+   * Requires explicit usage as the use of `Await.result`. Can throw an exception, which is inherently bad.
    */
   def futureComonad(duration: Duration)(implicit executionContext: ExecutionContext): Comonad[Future] = new FutureInstances with Comonad[Future] {
     def copoint[A](f: Future[A]): A = Await.result(f, duration)
@@ -50,9 +49,7 @@ trait FutureInstances extends FutureInstances1 {
 
 
   implicit def FutureGroup[A](implicit g: Group[A], executionContext: ExecutionContext): Group[Future[A]] = new FutureMonoid[A] with Group[Future[A]] {
-
     def inverse(f: Future[A]): Future[A] = f.map(value => g.inverse(value))
-
   }
 
 }
