@@ -36,7 +36,7 @@ trait Validation {
     valid(_ >= min, f)
 
   def equalO[T: Ordering, F](equal: T, f: F): Valid[F, T] = 
-    valid(_ >= equal, f)
+    valid(_ == equal, f)
 
   def equalE[T: Equal, F](equal: T, f: F) : Valid[F, T] =     
     valid(_ === equal, f)
