@@ -1,6 +1,5 @@
 *.class
 *.log
-.*.swp
 
 # sbt specific
 .lib/
@@ -11,5 +10,7 @@ src_managed/
 project/boot/
 project/plugins/project/
 
-# Scala-IDE specific
+# IDE specific
 .scala_dependencies
+.*.swp
+.idea*
