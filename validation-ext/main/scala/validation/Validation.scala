@@ -44,17 +44,17 @@ trait Validation {
     else failure.failNel
   }
 
-  def maxSize[T:Length, F](max: Int, failure: F): (T) => ValidationNEL[F,T] = t => {
+  def maxSize[T:Length, F](max: Int, failure: F): Valid[T, F] = t => {
     if (implicitly[Length[T]].length(t) <= max) t.success
     else failure.failNel
   }
 
-  def minSize[T:Length, F](max: Int, failure: F): (T) => ValidationNEL[F,T] = t => {
+  def minSize[T:Length, F](max: Int, failure: F): Valid[T, F] = t => {
     if (implicitly[Length[T]].length(t) >= max) t.success
     else failure.failNel
   }
 
-  def notEmpty[T: Length,F](failure: F): (T) => ValidationNEL[F,T] = t => {
+  def notEmpty[T: Length,F](failure: F): Valid[T, F] = t => {
     if (implicitly[Length[T]].length(t) === 0) t.success
     else failure.failNel
   }
