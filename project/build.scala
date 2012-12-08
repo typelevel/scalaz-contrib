@@ -22,7 +22,7 @@ object ScalazContribBuild extends Build {
     id = "scalaz-contrib",
     base = file("."),
     settings = standardSettings,
-    aggregate = Seq(scala210)
+    aggregate = Seq(scala210, validationExtension)
   )
 
   lazy val scala210 = Project(
@@ -33,6 +33,17 @@ object ScalazContribBuild extends Build {
       libraryDependencies ++= Seq(
         "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" cross CrossVersion.full,
         "org.scalaz" %% "scalaz-scalacheck-binding" % "7.0.0-M5" % "test" cross CrossVersion.full,
+        "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
+      )
+    )
+  )
+
+  lazy val validationExtension = Project(
+    id = "validation-ext",
+    base = file("validation-ext"),
+    settings = standardSettings ++ Seq(
+      name := "scalaz-contrib-validation",
+      libraryDependencies ++= Seq(
         "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
       )
     )
