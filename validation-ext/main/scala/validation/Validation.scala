@@ -25,6 +25,10 @@ trait Validation {
   def min[T: Ordering, F](min: T, f: F): Valid[F, T] =
     valid(_ >= min, f)
 
+  /** Inclusive range. */
+  def range[T: Ordering, F](min: T, max:T, f: F): Valid[F, T] =
+    valid(t => {t >= min && t <= max}, f)
+
   def equalO[T: Ordering, F](equal: T, f: F): Valid[F, T] = 
     valid(_ == equal, f)
 

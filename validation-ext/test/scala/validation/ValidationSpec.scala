@@ -86,6 +86,20 @@ class ValidationSpec extends Specification with Validation {
     equalTo5Test(equal(5,errorMessage))
   }
 
+  "range validation" should {
+    val range5to10 = range(5,10, errorMessage)
+
+    "fail if less than range" in {
+      (0 to 4).map(range5to10(_) must beEqualTo(failNel))
+    }
+    "pass if in range" in {
+      (5 to 10).map(n => range5to10(n) must beEqualTo(new Success(n)))
+    }
+    "fail if greater than range" in {
+      (11 to 100).map(range5to10(_) must beEqualTo(failNel))
+    }
+  }
+
   "max size" should {
     val max2 = maxSize[Int, List, String](2, errorMessage)
 
