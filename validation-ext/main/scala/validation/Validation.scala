@@ -5,7 +5,7 @@ import scalaz._
 import Scalaz._
 import scala.Ordering
 
-object Validation extends CoreValidation
+object Validation extends CoreValidation with StringValidation
 
 /**
  * Some basic validation functions.
@@ -43,7 +43,6 @@ trait CoreValidation {
   def notEmpty[V, T[_]: Length,F](f: F): Valid[F, T[V]] =
     valid(implicitly[Length[T]].length(_) === 0, f)
 
-  private def valid[T, F](p: T => Boolean, f: F): Valid[F, T] = t => if(p(t)) t.success else f.failNel
 }
 
 
