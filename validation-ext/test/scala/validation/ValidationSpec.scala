@@ -1,16 +1,17 @@
 package validation
 
 import org.specs2.mutable.Specification
-import scalaz.contrib.validation.Validation
 import scalaz._
 import Scalaz._
 import java.util.Date
+import scalaz.contrib.validation._
+import scalaz.contrib.validation.Validation._
 
 /**
  * User: travis.stevens@gaiam.com
  * Date: 12/7/12
  */
-class ValidationSpec extends Specification with Validation {
+class ValidationSpec extends Specification {
 
   val errorMessage = "Generic Error Message"
   val failNel = new Failure(NonEmptyList(errorMessage))

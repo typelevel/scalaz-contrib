@@ -5,13 +5,12 @@ import scalaz._
 import Scalaz._
 import scala.Ordering
 
+object Validation extends CoreValidation
 
 /**
  * Some basic validation functions.
  */
-trait Validation {
-
-  type Valid[F, T] = T => ValidationNEL[F, T]
+trait CoreValidation {
 
   /**
    *
