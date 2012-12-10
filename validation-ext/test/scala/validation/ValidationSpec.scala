@@ -2,7 +2,8 @@ package validation
 
 import org.specs2.mutable.Specification
 import scalaz.contrib.validation.Validation
-import scalaz.{NonEmptyList, Failure, Success}
+import scalaz._
+import Scalaz._
 import java.util.Date
 
 /**
@@ -12,6 +13,7 @@ import java.util.Date
 class ValidationSpec extends Specification with Validation {
 
   val errorMessage = "Generic Error Message"
+  val failNel = new Failure(NonEmptyList(errorMessage))
 
   "max validation" should {
 
@@ -20,23 +22,23 @@ class ValidationSpec extends Specification with Validation {
       val max10 = max(10, errorMessage)
 
       max10(1) must beEqualTo(new Success(1)) and
-        (max10(100) must beEqualTo(new Failure(NonEmptyList(errorMessage)))) and
+        (max10(100) must beEqualTo(failNel)) and
         ((1 to 10).map(x => max10(x) must beEqualTo(new Success(x)))).reduceLeft(_ and _) and
-        ((11 to 100).map(x => max10(x) must beEqualTo(new Failure(NonEmptyList(errorMessage))))).reduceLeft(_ and _)
+        ((11 to 100).map(x => max10(x) must beEqualTo(failNel))).reduceLeft(_ and _)
     }
 
     "pass for floats with implicit ordering" in {
 
       val max10Float = max(10.0, errorMessage)
       max10Float(7.0) must beEqualTo(new Success(7.0)) and
-        (max10Float(12) must beEqualTo(new Failure(NonEmptyList(errorMessage))))
+        (max10Float(12) must beEqualTo(failNel))
     }
 
     "pass for chars with implicit ordering" in {
       val maxIsx = max("x", errorMessage)
 
       maxIsx("a") must beEqualTo(new Success("a")) and
-        (maxIsx("z") must beEqualTo(new Failure(NonEmptyList(errorMessage))))
+        (maxIsx("z") must beEqualTo(failNel))
     }
 
     "pass for dates with implicit ordering" in {
@@ -45,7 +47,7 @@ class ValidationSpec extends Specification with Validation {
       val later = new Date(1354924395000l)
       val maxDate = max(new Date(1354924394521l), errorMessage)
       maxDate(earlier) must beEqualTo(Success(earlier)) and
-        (maxDate(later) must beEqualTo(new Failure(NonEmptyList(errorMessage))))
+        (maxDate(later) must beEqualTo(failNel))
     }
 
   }
@@ -54,8 +56,47 @@ class ValidationSpec extends Specification with Validation {
     val min10 = min(10,errorMessage)
     "pass for values greater than or equal to min" in {
       (10 to 100).map(x => min10(x) must beEqualTo(new Success(x)))
-      (-110 to 9).map(x => min10(x) must beEqualTo(new Failure(NonEmptyList(errorMessage))))
     }
+    
+    "fail for values less than min" in {
+      (-110 to 9).map(x => min10(x) must beEqualTo(failNel))
+    }
+  }
+
+  def equalTo5Test(f: Valid[String,Int]) = {
+    "pass for equal values" in {
+      f(5) must beEqualTo(new Success(5))
+    }
+
+    "fail for values less than the value" in {
+      (0 to 4).map(x => f(x) must beEqualTo(failNel))
+    }
+
+    "fail for values more than the value" in {
+      (6 to 100).map(x => f(x) must beEqualTo(failNel))
+    }
+
+  }
+
+  "equalO (Ordered)" should {
+    equalTo5Test(equalO(5, errorMessage))
+  }
+
+  "equal (Equal)" should {
+    equalTo5Test(equal(5,errorMessage))
+  }
+
+  "max size" should {
+    val max2 = maxSize[Int, List, String](2, errorMessage)
+
+    "pass when size is <= maxSize" in {
+      max2(List(1)) must beEqualTo(new Success(List(1)))
+    }
+
+    "fail when size is > maxSize" in {
+      max2(List(1,2,3)) must beEqualTo(failNel)
+    }
+
   }
 
 }
