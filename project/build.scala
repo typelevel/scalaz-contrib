@@ -3,17 +3,19 @@ import Keys._
 
 object ScalazContribBuild extends Build {
 
+  val scalazVersion = "7.0.0-M6"
+
   lazy val standardSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.typelevel",
     version := "0.1-SNAPSHOT",
-    scalaVersion := "2.10.0-RC3",
+    scalaVersion := "2.10.0-RC5",
     crossVersion := CrossVersion.full,
     scalacOptions ++= Seq(
       "-unchecked", "-deprecation",
       "-feature", "-language:implicitConversions", "-language:higherKinds"
     ),
     libraryDependencies ++= Seq(
-      "org.scalaz" %% "scalaz-core" % "7.0.0-M5" cross CrossVersion.full
+      "org.scalaz" %% "scalaz-core" % scalazVersion cross CrossVersion.full
     ),
     sourceDirectory <<= baseDirectory(identity)
   )
@@ -32,7 +34,7 @@ object ScalazContribBuild extends Build {
       name := "scalaz-contrib-210",
       libraryDependencies ++= Seq(
         "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" cross CrossVersion.full,
-        "org.scalaz" %% "scalaz-scalacheck-binding" % "7.0.0-M5" % "test" cross CrossVersion.full,
+        "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test" cross CrossVersion.full,
         "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
       )
     )

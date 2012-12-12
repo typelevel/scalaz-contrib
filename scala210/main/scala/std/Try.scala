@@ -24,7 +24,7 @@ trait TryInstances1 {
 
   implicit def TryInstances1: Traverse[Try] with Monad[Try] with Plus[Try] with Cozip[Try] =
     new IsomorphismTraverse[Try, EitherThrowable]
-    with IsomorphismMonad[Try, EitherThrowable] with Monad[Try] /* TODO fix in scalaz-core */
+    with IsomorphismMonad[Try, EitherThrowable]
     with IsomorphismPlus[Try, EitherThrowable]
     with Cozip[Try] {
     
