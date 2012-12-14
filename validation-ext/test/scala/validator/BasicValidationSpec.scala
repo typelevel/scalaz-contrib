@@ -86,6 +86,29 @@ class BasicValidationSpec extends Specification {
     }
   }
 
+  "not empty" should {
+
+    "pass when object is empty" in {
+      notEmpty(errorMessage)(List(1)) must beEqualTo(Success(List(1)))
+    }
+    "fail when object is empty" in {
+      notEmpty(errorMessage)(List()) must beEqualTo(fail)
+    }
+
+  }
+
+  "length is" should {
+    val check = lengthIs(_ === 2, errorMessage)
+    "pass when length is as specified" in {
+      check(List(1,2)) must beEqualTo(Success(List(1,2)))
+    }
+    "fail when length is not as specified" in {
+      check(List(1,2,3)) must beEqualTo(fail)
+    }
+  }
+
+
+
 }
 
 // vim: expandtab:ts=2:sw=2

@@ -32,20 +32,19 @@ trait BasicValidators {
   def equal[T: Equal, F](t: T, f: => F) : Validator[F, T] =
     validator(_ === t, f)
 
-  def minSize[F](min: Int, f: => F) = new {
+  def minSize[F](min: Int, f: => F) = lengthIs(_ >= min, f)
+
+  def maxSize[F](max: Int, f: => F) = lengthIs(_ <= max, f)
+
+  def notEmpty[F](f: => F) = lengthIs(_ > 0, f)
+
+  def lengthIs[F](lf: (Int) => Boolean, f: => F) = new {
     def apply[T](t: T)(implicit L: Unapply[Length, T]): Validation[F, T] =
-      fromBoolean(L.TC.length(L(t)) >= min, f, t)
+      fromBoolean(lf(L.TC.length(L(t))), f, t)
   }
 
-  def maxSize[F](max: Int, f: => F) = new {
-    def apply[T](t: T)(implicit L: Unapply[Length, T]): Validation[F, T] =
-      fromBoolean(L.TC.length(L(t)) <= max, f, t)
-  }
 
-  def notEmpty[F](f: => F) = new {
-    def apply[T](t: T)(implicit L: Unapply[Length, T]): Validation[F, T] =
-      fromBoolean(L.TC.length(L(t)) === 0, f, t)
-  }
+
 
 }
 

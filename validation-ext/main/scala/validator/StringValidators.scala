@@ -1,8 +1,7 @@
 package scalaz.contrib
 package validator
 
-import java.text.{SimpleDateFormat, ParseException, DateFormat}
-import java.util.{Date, UUID}
+import java.util.UUID
 
 import annotation.tailrec
 import util.matching.Regex
@@ -18,14 +17,6 @@ trait StringValidators {
 
   def notBlank[F](f: => F): Validator[F, String] =
     validator(_.trim.size > 0, f)
-
-  def uuid[F](f: => F): Converter[F, String, UUID] = s =>
-    try {
-      Success(UUID.fromString(s))
-    }
-    catch {
-      case ex: IllegalArgumentException => Failure(f)
-    }
 
   /** The Luhn check in a validation. */
   def luhn[F](f: => F): Validator[F, String] = {
@@ -54,19 +45,6 @@ trait StringValidators {
     validator(luhnCheck(10, _), f)
   }
 
-  def date[F](fmt: DateFormat, f: => F): Converter[F, String, Date] = s =>
-    try {
-      Success(fmt.parse(s))
-    }
-    catch {
-      case e: ParseException => Failure(f)
-    }
-
-  def date[F](str: String, f: => F): Converter[F, String, Date] = {
-    val fmt = new SimpleDateFormat(str)
-    fmt.setLenient(false)
-    date(fmt, f)
-  }
 
 }
 
