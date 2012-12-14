@@ -64,9 +64,11 @@ class BasicValidationSpec extends Specification {
     "fail if less than range" in {
       (0 to 4).map(range5to10(_) must beEqualTo(fail))
     }
+
     "pass if in range" in {
       (5 to 10).map(n => range5to10(n) must beEqualTo(Success(n)))
     }
+
     "fail if greater than range" in {
       (11 to 100).map(range5to10(_) must beEqualTo(fail))
     }
@@ -84,6 +86,6 @@ class BasicValidationSpec extends Specification {
     }
   }
 
-
-
 }
+
+// vim: expandtab:ts=2:sw=2
