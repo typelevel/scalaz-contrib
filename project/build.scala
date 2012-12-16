@@ -5,6 +5,9 @@ object ScalazContribBuild extends Build {
 
   val scalazVersion = "7.0.0-M6"
 
+  val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
+  val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" cross CrossVersion.full
+
   lazy val standardSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.typelevel",
     version := "0.1-SNAPSHOT",
@@ -33,9 +36,9 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-contrib-210",
       libraryDependencies ++= Seq(
-        "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" cross CrossVersion.full,
         "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test" cross CrossVersion.full,
-        "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
+        specs2,
+        scalacheck
       )
     )
   )
@@ -45,9 +48,16 @@ object ScalazContribBuild extends Build {
     base = file("validation-ext"),
     settings = standardSettings ++ Seq(
       name := "scalaz-contrib-validation",
-      libraryDependencies ++= Seq(
-        "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
-      )
+      libraryDependencies += specs2
+    )
+  )
+
+  lazy val undo = Project(
+    id = "undo",
+    base = file("undo"),
+    settings = standardSettings ++ Seq(
+      name := "scalaz-contrib-undo",
+      libraryDependencies += specs2
     )
   )
 
