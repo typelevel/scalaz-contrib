@@ -14,6 +14,7 @@ package object validator {
 
   object basic extends BasicValidators
   object string extends StringValidators
+  object stringConverter extends StringConverters
 
   object all extends BasicValidators with StringValidators
 
