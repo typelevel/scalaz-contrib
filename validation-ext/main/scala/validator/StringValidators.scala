@@ -1,8 +1,6 @@
 package scalaz.contrib
 package validator
 
-import java.util.UUID
-
 import annotation.tailrec
 import util.matching.Regex
 

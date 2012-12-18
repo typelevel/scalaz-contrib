@@ -75,7 +75,7 @@ class BasicValidationSpec extends Specification {
   }
 
   "max size" should {
-    val max2 = maxSize(2, errorMessage)
+    val max2 = maxLength(2, errorMessage)
 
     "pass when size is <= maxSize" in {
       max2(List(1)) must beEqualTo(Success(List(1)))
