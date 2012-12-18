@@ -1,17 +1,18 @@
-package scalaz.contrib
-package validator
+package converter
 
-import scalaz._
 import java.text.SimpleDateFormat
 import org.specs2.mutable.Specification
 import java.util.UUID
+import scalaz.contrib.converter.string
+import scalaz.Failure
+import scalaz.Success
 
 class StringConvertersSpec extends Specification {
 
   val errorMessage = "Generic Error Message"
   val fail = Failure(errorMessage)
 
-  import stringConverter._
+  import string._
 
   "string converters" in {
 
@@ -31,6 +32,7 @@ class StringConvertersSpec extends Specification {
 
     "valid date" should {
       val sdf = new SimpleDateFormat("yyyy-MM-dd")
+      sdf.setLenient(false)
       val check = date("yyyy-MM-dd", errorMessage)
 
       "be successful when date is valid" in {
