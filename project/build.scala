@@ -20,13 +20,47 @@ object ScalazContribBuild extends Build {
     libraryDependencies ++= Seq(
       "org.scalaz" %% "scalaz-core" % scalazVersion cross CrossVersion.full
     ),
-    sourceDirectory <<= baseDirectory(identity)
+    sourceDirectory <<= baseDirectory(identity),
+    publishTo <<= (version).apply { v =>
+      val nexus = "https://oss.sonatype.org/"
+      if (v.trim.endsWith("SNAPSHOT"))
+        Some("Snapshots" at nexus + "content/repositories/snapshots")
+      else
+        Some("Releases" at nexus + "service/local/staging/deploy/maven2")
+    },
+    credentials += Credentials(
+      Option(System.getProperty("build.publish.credentials")) map (new File(_)) getOrElse (Path.userHome / ".ivy2" / ".credentials")
+    ),
+    pomIncludeRepository := Function.const(false),
+    pomExtra :=
+      <url>http://typelevel.org/scalaz</url>
+        <licenses>
+          <license>
+            <name>MIT</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+          </license>
+        </licenses>
+        <scm>
+            <url>https://github.com/larsrh/scalaz-contrib</url>
+            <connection>scm:git:git://github.com/larsrh/scalaz-contrib.git</connection>
+            <developerConnection>scm:git:git@github.com:larsrh/scalaz-contrib.git</developerConnection>
+        </scm>
+        <developers>
+          <developer>
+            <id>larsrh</id>
+            <name>Lars Hupel</name>
+            <url>https://github.com/larsrh</url>
+          </developer>
+        </developers>
   )
 
   lazy val scalazContrib = Project(
     id = "scalaz-contrib",
     base = file("."),
-    settings = standardSettings,
+    settings = standardSettings ++ Seq(
+      publishArtifact := false
+    ),
     aggregate = Seq(scala210, validationExtension)
   )
 
