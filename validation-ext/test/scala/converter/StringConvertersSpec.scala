@@ -32,6 +32,7 @@ class StringConvertersSpec extends Specification {
 
     "valid date" should {
       val sdf = new SimpleDateFormat("yyyy-MM-dd")
+      sdf.setLenient(false)
       val check = date("yyyy-MM-dd", errorMessage)
 
       "be successful when date is valid" in {
