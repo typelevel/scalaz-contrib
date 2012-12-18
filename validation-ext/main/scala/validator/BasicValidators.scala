@@ -43,9 +43,6 @@ trait BasicValidators {
       fromBoolean(lf(L.TC.length(L(t))), f, t)
   }
 
-
-
-
 }
 
 // vim: expandtab:ts=2:sw=2

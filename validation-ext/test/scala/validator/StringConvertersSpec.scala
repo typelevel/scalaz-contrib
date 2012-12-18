@@ -6,18 +6,12 @@ import java.text.SimpleDateFormat
 import org.specs2.mutable.Specification
 import java.util.UUID
 
-
-/**
- *
- */
 class StringConvertersSpec extends Specification {
-
 
   val errorMessage = "Generic Error Message"
   val fail = Failure(errorMessage)
 
   import stringConverter._
-
 
   "string converters" in {
 
@@ -59,7 +53,6 @@ class StringConvertersSpec extends Specification {
       double(errorMessage)("seven") must beEqualTo(fail)
     }
 
-
     "UUID conversion" should {
       val toUUID = uuid(errorMessage)
 
@@ -72,7 +65,5 @@ class StringConvertersSpec extends Specification {
       }
     }
   }
-
-
 
 }

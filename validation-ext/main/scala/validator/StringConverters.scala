@@ -44,7 +44,8 @@ trait StringConverters {
   private def fromNFE[N, F](fx: String => N, f: => F): Converter[F, String, N] = s =>
     try {
       Success(fx(s))
-    } catch {
+    }
+    catch {
       case e: NumberFormatException => Failure(f)
     }
 

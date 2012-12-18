@@ -87,14 +87,12 @@ class BasicValidationSpec extends Specification {
   }
 
   "not empty" should {
-
     "pass when object is empty" in {
       notEmpty(errorMessage)(List(1)) must beEqualTo(Success(List(1)))
     }
     "fail when object is empty" in {
       notEmpty(errorMessage)(List()) must beEqualTo(fail)
     }
-
   }
 
   "length is" should {
@@ -106,8 +104,6 @@ class BasicValidationSpec extends Specification {
       check(List(1,2,3)) must beEqualTo(fail)
     }
   }
-
-
 
 }
 
