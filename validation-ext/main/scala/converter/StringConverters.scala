@@ -1,12 +1,13 @@
 package scalaz.contrib
-package validator
+package converter
 
-import scalaz._
+import scalaz.{Failure, Success}
+
 import java.text.{SimpleDateFormat, ParseException, DateFormat}
 import java.util.{UUID, Date}
 
 /**
- * String to various other data types.
+ * String conversion to other data types.
  */
 trait StringConverters {
 
