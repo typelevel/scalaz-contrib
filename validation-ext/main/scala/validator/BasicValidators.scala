@@ -14,33 +14,33 @@ trait BasicValidators {
 
   /**
    * @param max The max, can be any type that has an Ordering
-   * @param f The return object if there is a failure.
+   * @param e The return object if there is a failure.
    */
-  def atMost[T: Ordering, F](max: T, f: => F): Validator[F, T] =
-    validator(_ <= max, f)
+  def atMost[T: Ordering, E](max: T, e: => E): Validator[E, T] =
+    validator(_ <= max, e)
 
-  def atLeast[T: Ordering, F](min: T, f: => F): Validator[F, T] =
-    validator(_ >= min, f)
+  def atLeast[T: Ordering, E](min: T, e: => E): Validator[E, T] =
+    validator(_ >= min, e)
 
   /** Inclusive range. */
-  def range[T: Ordering, F](min: T, max:T, f: => F): Validator[F, T] =
-    validator(t => t >= min && t <= max, f)
+  def range[T: Ordering, E](min: T, max:T, e: => E): Validator[E, T] =
+    validator(t => t >= min && t <= max, e)
 
-  def equalA[T, F](t: T, f: => F): Validator[F, T] =
-    validator(_ == t, f)
+  def equalA[T, E](t: T, e: => E): Validator[E, T] =
+    validator(_ == t, e)
 
-  def equal[T: Equal, F](t: T, f: => F) : Validator[F, T] =
-    validator(_ === t, f)
+  def equal[T: Equal, E](t: T, e: => E) : Validator[E, T] =
+    validator(_ === t, e)
 
-  def minLength[F](min: Int, f: => F) = lengthIs(_ >= min, f)
+  def minLength[E](min: Int, e: => E) = lengthIs(_ >= min, e)
 
-  def maxLength[F](max: Int, f: => F) = lengthIs(_ <= max, f)
+  def maxLength[E](max: Int, e: => E) = lengthIs(_ <= max, e)
 
-  def notEmpty[F](f: => F) = lengthIs(_ > 0, f)
+  def notEmpty[E](e: => E) = lengthIs(_ > 0, e)
 
-  def lengthIs[F](lf: (Int) => Boolean, f: => F) = new {
-    def apply[T](t: T)(implicit L: Unapply[Length, T]): Validation[F, T] =
-      fromBoolean(lf(L.TC.length(L(t))), f, t)
+  def lengthIs[E](lf: (Int) => Boolean, e: => E) = new {
+    def apply[T](t: T)(implicit L: Unapply[Length, T]): Validation[E, T] =
+      fromBoolean(lf(L.TC.length(L(t))), e, t)
   }
 
 }

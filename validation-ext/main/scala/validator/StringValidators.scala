@@ -10,23 +10,23 @@ import scalaz.std.anyVal._
 
 trait StringValidators {
 
-  def maxStrLength[F](max: Int, f: => F): Validator[F,String] = strLengthIs(_ <= max, f)
+  def maxStrLength[E](max: Int, e: => E): Validator[E,String] = strLengthIs(_ <= max, e)
 
-  def minStrLength[F](min: Int, f: => F): Validator[F,String] = strLengthIs(_ >= min, f)
+  def minStrLength[E](min: Int, e: => E): Validator[E,String] = strLengthIs(_ >= min, e)
 
-  def strLength[F](x: Int, f: => F): Validator[F, String] = strLengthIs(_ == x, f)
+  def strLength[E](x: Int, e: => E): Validator[E, String] = strLengthIs(_ == x, e)
 
-  def strLengthIs[F](fx: (Int) => Boolean, f: => F): Validator[F,String] = s =>
-    fromBoolean(fx(s.length), f, s)
+  def strLengthIs[E](fx: (Int) => Boolean, e: => E): Validator[E,String] = s =>
+    fromBoolean(fx(s.length), e, s)
 
-  def matchRegex[F](r: Regex, f: => F): Validator[F,String] =
-    validator(r.pattern.matcher(_).matches(), f)
+  def matchRegex[E](r: Regex, e: => E): Validator[E,String] =
+    validator(r.pattern.matcher(_).matches(), e)
 
-  def notBlank[F](f: => F): Validator[F, String] =
-    validator(_.trim.size > 0, f)
+  def notBlank[E](e: => E): Validator[E, String] =
+    validator(_.trim.size > 0, e)
 
   /** The Luhn check in a validation. */
-  def luhn[F](f: => F): Validator[F, String] = {
+  def luhn[E](e: => E): Validator[E, String] = {
 
     def digitToInt(x:Char) = x.toInt - '0'.toInt
 
@@ -49,7 +49,7 @@ trait StringValidators {
       }
     }
 
-    validator(luhnCheck(10, _), f)
+    validator(luhnCheck(10, _), e)
   }
 
 
