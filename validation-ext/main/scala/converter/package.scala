@@ -8,5 +8,6 @@ package object converter {
 
   object string extends StringConverters
 
+  object all extends StringConverters
 
 }

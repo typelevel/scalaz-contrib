@@ -1,7 +1,6 @@
 package scalaz.contrib
 
 import scalaz._
-import converter.StringConverters
 
 package object validator {
 

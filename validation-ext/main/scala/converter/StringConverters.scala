@@ -1,10 +1,10 @@
 package scalaz.contrib
 package converter
 
+import scalaz.{Failure, Success}
+
 import java.text.{SimpleDateFormat, ParseException, DateFormat}
 import java.util.{UUID, Date}
-import scalaz.Failure
-import scalaz.Success
 
 /**
  * String conversion to other data types.
