@@ -52,6 +52,11 @@ object ScalazContribBuild extends Build {
             <name>Lars Hupel</name>
             <url>https://github.com/larsrh</url>
           </developer>
+          <developer>
+            <id>OleTraveler</id>
+            <name>Travis Stevens</name>
+            <url>https://github.com/OleTraveler</url>
+          </developer>
         </developers>
   )
 
