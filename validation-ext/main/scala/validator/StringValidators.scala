@@ -10,6 +10,15 @@ import scalaz.std.anyVal._
 
 trait StringValidators {
 
+  def maxStrLength[F](max: Int, f: => F): Validator[F,String] = strLengthIs(_ <= max, f)
+
+  def minStrLength[F](min: Int, f: => F): Validator[F,String] = strLengthIs(_ >= min, f)
+
+  def strLength[F](x: Int, f: => F): Validator[F, String] = strLengthIs(_ == x, f)
+
+  def strLengthIs[F](fx: (Int) => Boolean, f: => F): Validator[F,String] = s =>
+    fromBoolean(fx(s.length), f, s)
+
   def matchRegex[F](r: Regex, f: => F): Validator[F,String] =
     validator(r.pattern.matcher(_).matches(), f)
 
