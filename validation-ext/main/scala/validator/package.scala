@@ -4,11 +4,11 @@ import scalaz._
 
 package object validator {
 
-  type Validator[F, T] = T => Validation[F, T]
+  type Validator[E, T] = T => Validation[E, T]
 
-  def fromBoolean[T, F](b: Boolean, f: => F, t: => T) = if (b) Success(t) else Failure(f)
+  def fromBoolean[T, E](b: Boolean, e: => E, t: => T) = if (b) Success(t) else Failure(e)
 
-  def validator[T, F](p: T => Boolean, f: => F): Validator[F, T] = t => fromBoolean(p(t), f, t)
+  def validator[T, E](p: T => Boolean, e: => E): Validator[E, T] = t => fromBoolean(p(t), e, t)
 
   object basic extends BasicValidators
   object string extends StringValidators

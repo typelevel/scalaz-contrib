@@ -65,6 +65,22 @@ class StringValidationSpec extends Specification {
     }
   }
 
+  "strLength validation" should {
+    val maxThree = maxStrLength(3, errorMessage)
+    val minThree = minStrLength(3, errorMessage)
+    val eqThree = strLength(3, errorMessage)
+
+    "succeed when correct" in {
+      List("", "1", "12", "123") foreach {x => maxThree(x) must beEqualTo(Success(x))}
+      List("123", "1234", "12345") foreach {x => minThree(x) must beEqualTo(Success(x))}
+      eqThree("123") must beEqualTo(Success("123"))
+    }
+    "fail when invalid" in {
+      List("1234", "12345") foreach {x => maxThree(x) must beEqualTo(Failure(errorMessage))}
+      List("", "1", "12") foreach {x => minThree(x) must beEqualTo(Failure(errorMessage))}
+      List("", "1", "12", "1234", "12345") foreach {num => eqThree(num) must beEqualTo(Failure(errorMessage))}
+    }
+  }
 
 }
 

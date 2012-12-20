@@ -4,7 +4,7 @@ import scalaz._
 
 package object converter {
 
-  type Converter[F, T, U] = T => Validation[F, U]
+  type Converter[E, T, U] = T => Validation[E, U]
 
   object string extends StringConverters
 
