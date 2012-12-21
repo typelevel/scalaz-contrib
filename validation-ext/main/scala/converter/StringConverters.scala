@@ -11,43 +11,43 @@ import java.util.{UUID, Date}
  */
 trait StringConverters {
 
-  def date[F](fmt: DateFormat, f: => F): Converter[F, String, Date] = s =>
+  def date[E](fmt: DateFormat, e: => E): Converter[E, String, Date] = s =>
     try {
       Success(fmt.parse(s))
     }
     catch {
-      case e: ParseException => Failure(f)
+      case ex: ParseException => Failure(e)
     }
 
-  def date[F](str: String, f: => F): Converter[F, String, Date] = {
+  def date[E](str: String, e: => E): Converter[E, String, Date] = {
     val fmt = new SimpleDateFormat(str)
     fmt.setLenient(false)
-    date(fmt, f)
+    date(fmt, e)
   }
 
-  def uuid[F](f: => F): Converter[F, String, UUID] = s =>
+  def uuid[E](e: => E): Converter[E, String, UUID] = s =>
     try {
       Success(UUID.fromString(s))
     }
     catch {
-      case ex: IllegalArgumentException => Failure(f)
+      case ex: IllegalArgumentException => Failure(e)
     }
 
-  def int[F](f: => F): Converter[F, String, Int] =
-    fromNFE(_.toInt, f)
+  def int[E](e: => E): Converter[E, String, Int] =
+    fromNFE(_.toInt, e)
 
-  def float[F](f: => F): Converter[F, String, Float] =
-    fromNFE(_.toFloat, f)
+  def float[E](e: => E): Converter[E, String, Float] =
+    fromNFE(_.toFloat, e)
 
-  def double[F](f: => F): Converter[F, String, Double] =
-    fromNFE(_.toDouble, f)
+  def double[E](e: => E): Converter[E, String, Double] =
+    fromNFE(_.toDouble, e)
 
-  private def fromNFE[N, F](fx: String => N, f: => F): Converter[F, String, N] = s =>
+  private def fromNFE[N, E](fx: String => N, e: => E): Converter[E, String, N] = s =>
     try {
       Success(fx(s))
     }
     catch {
-      case e: NumberFormatException => Failure(f)
+      case ex: NumberFormatException => Failure(e)
     }
 
 }
