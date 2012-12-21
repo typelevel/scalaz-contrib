@@ -1,14 +1,18 @@
 package scalaz.contrib
 
 import scalaz._
+import scalaz.syntax.std.boolean._
+import scalaz.syntax.std.option._
+
+import converter.Converter
 
 package object validator {
 
-  type Validator[E, T] = T => Validation[E, T]
+  type Validator[E, T] = T => Option[E]
 
-  def fromBoolean[T, E](b: Boolean, e: => E, t: => T) = if (b) Success(t) else Failure(e)
+  def validator[E, T](p: T => Boolean, f: => E): Validator[E, T] = t => !p(t) option f
 
-  def validator[T, E](p: T => Boolean, e: => E): Validator[E, T] = t => fromBoolean(p(t), e, t)
+  def toConverter[E, T](v: Validator[E, T]): Converter[E, T, T] = t => v(t) toFailure t
 
   object basic extends BasicValidators
   object string extends StringValidators
