@@ -3,6 +3,8 @@ package scalaz.contrib
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary._
 
+import org.specs2.scalaz.Spec
+
 import scalaz._
 import scalaz.syntax.functor._
 import scalaz.scalacheck.ScalazProperties._
