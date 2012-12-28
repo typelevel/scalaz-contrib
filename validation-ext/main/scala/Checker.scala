@@ -29,14 +29,17 @@ sealed trait Checker[+F, T] {
 
   def convertTo[F1 >: F, U](conv: Converter[F1, T, U]): Checker[F1, U]
 
+  def andAlso[F1 >: F, U](c: Checker[F1, U]): Checker[F1, (T, U)]
+
+  @inline final def andWith[F1 >: F, U, R](that: Checker[F1, U], f: (T, U) => R) =
+    this andAlso that map f.tupled
+
   def toValidation: Validation[NonEmptyList[F], T]
 
-  def toOption = toValidation.toOption
+  def map[U](f: T => U): Checker[F, U]
 
-  def map[U](f: T => U): Checker[F, U] = this match {
-    case YesChecker(value, failures) => YesChecker(f(value), failures)
-    case NoChecker(failures) => NoChecker(failures)
-  }
+  def toOption =
+    toValidation.toOption
 
 }
 
@@ -53,11 +56,20 @@ private[scalaz] case class YesChecker[+F, T](value: T, failures: Vector[F]) exte
       case _ => conv(value).fold(f => NoChecker(NonEmptyList(f)), YesChecker(_, Vector.empty))
     }
 
+  def andAlso[F1 >: F, U](c: Checker[F1, U]) =
+    c match {
+      case YesChecker(v, fs) => YesChecker((value, v), failures ++ fs)
+      case NoChecker(fs) => NoChecker(failures.toList <::: fs)
+    }
+
   def toValidation =
     failures match {
       case f +: fs => Failure(NonEmptyList(f, fs: _*))
       case _ => Success(value)
     }
+
+  def map[U](f: T => U): Checker[F, U] =
+    YesChecker(f(value), failures)
 
 }
 
@@ -69,8 +81,17 @@ private[scalaz] case class NoChecker[+F, T](failures: NonEmptyList[F]) extends C
   def convertTo[F1 >: F, U](conv: Converter[F1, T, U]) =
     NoChecker(failures)
 
+  def andAlso[F1 >: F, U](c: Checker[F1, U]) =
+    c match {
+      case YesChecker(v, fs) => NoChecker(failures :::> fs.toList)
+      case NoChecker(fs) => NoChecker(failures append fs)
+    }
+
   def toValidation: Validation[NonEmptyList[F], T] =
     Failure(failures)
+
+  def map[U](f: T => U): Checker[F, U] =
+    NoChecker(failures)
 
   override def toOption =
     None
