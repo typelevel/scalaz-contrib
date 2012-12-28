@@ -3,25 +3,24 @@ import Keys._
 
 object ScalazContribBuild extends Build {
 
-  val scalazVersion = "7.0.0-M6"
+  val scalazVersion = "7.0.0-M7"
 
-  val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test" cross CrossVersion.full
-  val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" cross CrossVersion.full
-  val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1-SNAPSHOT" % "test" cross CrossVersion.full
+  val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test"
+  val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
+  val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1-SNAPSHOT" % "test"
 
   lazy val standardSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.typelevel",
     version := "0.1-SNAPSHOT",
 
-    scalaVersion := "2.10.0-RC5",
-    crossVersion := CrossVersion.full,
+    scalaVersion := "2.10.0",
     scalacOptions ++= Seq(
       "-unchecked", "-deprecation",
       "-feature", "-language:implicitConversions", "-language:higherKinds"
     ),
 
     libraryDependencies ++= Seq(
-      "org.scalaz" %% "scalaz-core" % scalazVersion cross CrossVersion.full
+      "org.scalaz" %% "scalaz-core" % scalazVersion
     ),
     resolvers += Resolver.sonatypeRepo("snapshots"),
 
@@ -81,7 +80,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-contrib-210",
       libraryDependencies ++= Seq(
-        "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test" cross CrossVersion.full,
+        "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test",
         specs2,
         scalazSpecs2,
         scalacheck
