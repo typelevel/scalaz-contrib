@@ -37,12 +37,11 @@ trait TryInstances1 {
 
   }
 
-
 }
 
 trait TryInstances extends TryInstances1 {
 
-  def tryIsoSet[A] = new IsoSet[Try[A], Throwable \/ A] {
+  def tryIsoSet[A] = new IsoSet[Try[A], Throwable \/ A] { // TODO move to scalaz-core
     def to = tryIsoFunctor.to[A]
     def from = tryIsoFunctor.from[A]
   }
