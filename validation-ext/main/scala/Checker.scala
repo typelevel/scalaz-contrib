@@ -16,11 +16,6 @@ object Checker {
   def checkThat[F, T](t: T, vs: Validator[F, T]*): Checker[F, T] =
     YesChecker(t, validatorsToSeq(t, vs))
 
-  def CheckerInstance[F]: Functor[({ type λ[α] = Checker[F, α] })#λ] = 
-    new Functor[({ type λ[α] = Checker[F, α] })#λ] {
-      def map[A, B](fa: Checker[F, A])(f: A => B) = fa map f
-    }
-
 }
 
 sealed trait Checker[+F, T] {

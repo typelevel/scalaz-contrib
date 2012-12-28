@@ -94,7 +94,12 @@ object ScalazContribBuild extends Build {
     base = file("validation-ext"),
     settings = standardSettings ++ Seq(
       name := "scalaz-contrib-validation",
-      libraryDependencies += specs2
+      libraryDependencies ++= Seq(
+        specs2,
+        scalazSpecs2,
+        scalacheck,
+        scalazScalacheck
+      )
     )
   )
 
