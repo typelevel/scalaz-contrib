@@ -25,7 +25,7 @@ trait FutureInstances1 {
 
 trait FutureInstances extends FutureInstances1 {
 
-  private[scalaz] class FutureInstances(implicit ec: ExecutionContext) extends Monad[Future] with Cobind[Future] with Cojoin[Future] with Each[Future] {
+  private[scalaz] class FutureInstance(implicit ec: ExecutionContext) extends Monad[Future] with Cobind[Future] with Cojoin[Future] with Each[Future] {
 
     def point[A](a: => A): Future[A] = Future(a)
     def bind[A, B](fa: Future[A])(f: A => Future[B]): Future[B] = fa flatMap f
@@ -37,13 +37,13 @@ trait FutureInstances extends FutureInstances1 {
   }
 
   implicit def futureInstance(implicit executionContext: ExecutionContext): Monad[Future] with Cobind[Future] with Cojoin[Future] with Each[Future] = 
-    new FutureInstances
+    new FutureInstance
 
 
   /**
    * Requires explicit usage as the use of `Await.result`. Can throw an exception, which is inherently bad.
    */
-  def futureComonad(duration: Duration)(implicit executionContext: ExecutionContext): Comonad[Future] = new FutureInstances with Comonad[Future] {
+  def futureComonad(duration: Duration)(implicit executionContext: ExecutionContext): Comonad[Future] = new FutureInstance with Comonad[Future] {
     def copoint[A](f: Future[A]): A = Await.result(f, duration)
   }
 

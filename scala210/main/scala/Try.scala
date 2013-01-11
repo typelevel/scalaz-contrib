@@ -27,7 +27,7 @@ trait TryInstances1 {
     with IsomorphismMonad[Try, EitherThrowable]
     with IsomorphismPlus[Try, EitherThrowable]
     with Cozip[Try] {
-    
+
     def G = \/.DisjunctionInstances2[Throwable]
 
     // TODO move to scalaz-core
