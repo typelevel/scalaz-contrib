@@ -20,15 +20,21 @@
 package scalaz.contrib
 package dispatch
 
-import _root_.dispatch._
 import scalaz._
 
+import _root_.dispatch.{Promise, Http, HttpExecutor}
+
 trait PromiseInstances {
-  implicit val promiseInstance = new Traverse[Promise] with Monad[Promise] {
+
+  def promiseInstance(http: HttpExecutor) = new Traverse[Promise] with Monad[Promise] {
     def traverseImpl[G[_]: Applicative, A, B](fa: Promise[A])(f: (A) => G[B]): G[Promise[B]] =
-      Applicative[G].map(f(fa()))(Promise(_: B))
-    def point[A](a: => A) = Promise(a)
+      Applicative[G].map(f(fa()))(http.promise(_: B))
+    def point[A](a: => A) = http.promise(a)
     def bind[A, B](fa: Promise[A])(f: (A) => Promise[B]) = fa flatMap f
   }
+
+  implicit def defaultPromiseInstance: Traverse[Promise] with Monad[Promise] = promiseInstance(Http)
+
 }
 
+object promise extends PromiseInstances

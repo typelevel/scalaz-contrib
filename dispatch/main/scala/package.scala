@@ -19,4 +19,5 @@
  */
 package scalaz.contrib
 
-package object dispatch extends PromiseInstances
+package object dispatch
+  extends PromiseInstances
