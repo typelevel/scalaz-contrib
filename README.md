@@ -19,6 +19,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies ++= Seq(
   "org.typelevel" % "scalaz-contrib-210" % "0.1-SNAPSHOT",
   "org.typelevel" % "scalaz-contrib-validation" % "0.1-SNAPSHOT",
+  "org.typelevel" % "scalaz-contrib-undo" % "0.1-SNAPSHOT",
   "org.typelevel" % "scalaz-dispatch" % "0.1-SNAPSHOT"
 )
 ```
@@ -62,7 +63,30 @@ scala> c.checkThat(notEmpty("must be non-empty")(_)).
      |   map(_.mkString("")).
      |   convertTo(uuid("must be a valid UUID")).
      |   toValidation
-res0: Validation[NonEmptyList[String],Date] = Failure(NonEmptyList(must be a valid UUID))
+res1: Validation[NonEmptyList[String],Date] = Failure(NonEmptyList(must be a valid UUID))
+```
+
+### Undo
+
+Originally by Gerolf Seitz (@gseitz).
+
+```scala
+import scalaz.contrib.undo.UndoT
+import UndoT._
+import scalaz.std.option._
+
+val result = for {
+  one           <- hput[Option, Int](1)
+  two           <- hput[Option, Int](2)
+  three         <- hput[Option, Int](3)
+  twoAgain      <- undo[Option, Int]
+  four          <- hput[Option, Int](4)
+  twoAgainAgain <- undo[Option, Int]
+  fourAgain     <- redo[Option, Int]
+} yield ()
+
+scala> result.exec(1)
+res0: Option[Int] = Some(4)
 ```
 
 ### Library bindings
