@@ -24,7 +24,10 @@ object ScalazContribBuild extends Build {
     libraryDependencies ++= Seq(
       "org.scalaz" %% "scalaz-core" % scalazVersion
     ),
-    resolvers += Resolver.sonatypeRepo("snapshots"),
+    resolvers ++= Seq(
+      Resolver.sonatypeRepo("snapshots"),
+      Resolver.sonatypeRepo("releases")
+    ),
 
     sourceDirectory <<= baseDirectory(identity),
 
