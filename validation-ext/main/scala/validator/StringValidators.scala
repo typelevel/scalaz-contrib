@@ -5,21 +5,22 @@ import annotation.tailrec
 import util.matching.Regex
 
 import scalaz._
-import scalaz.syntax.equal._
 import scalaz.std.anyVal._
+import scalaz.syntax.equal._
+import scalaz.syntax.std.boolean._
 
 trait StringValidators {
 
-  def maxStrLength[E](max: Int, e: => E): Validator[E,String] = strLengthIs(_ <= max, e)
+  def maxStrLength[E](max: Int, e: => E): Validator[E, String] = strLengthIs(_ <= max, e)
 
-  def minStrLength[E](min: Int, e: => E): Validator[E,String] = strLengthIs(_ >= min, e)
+  def minStrLength[E](min: Int, e: => E): Validator[E, String] = strLengthIs(_ >= min, e)
 
   def strLength[E](x: Int, e: => E): Validator[E, String] = strLengthIs(_ == x, e)
 
-  def strLengthIs[E](fx: (Int) => Boolean, e: => E): Validator[E,String] = s =>
-    fromBoolean(fx(s.length), e, s)
+  def strLengthIs[E](f: Int => Boolean, e: => E): Validator[E, String] = s =>
+    !f(s.length) option e
 
-  def matchRegex[E](r: Regex, e: => E): Validator[E,String] =
+  def matchRegex[E](r: Regex, e: => E): Validator[E, String] =
     validator(r.pattern.matcher(_).matches(), e)
 
   def notBlank[E](e: => E): Validator[E, String] =
@@ -40,7 +41,7 @@ trait StringValidators {
 
     /** Calculates the total sum of the characters using the Luhn algorithm. */
     @tailrec
-    def luhnSum(str: List[Char], sum: Int, multiplier: Int) : Int = {
+    def luhnSum(str: List[Char], sum: Int, multiplier: Int): Int = {
       def nextMulti(m: Int) = if (m == 1) 2 else 1
       def doubleSum(i: Int) = i % 10 + i / 10
       str match {

@@ -8,6 +8,7 @@ object ScalazContribBuild extends Build {
   val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test"
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
   val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1-SNAPSHOT" % "test"
+  val scalazScalacheck = "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
 
   lazy val standardSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.typelevel",
@@ -80,10 +81,10 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-contrib-210",
       libraryDependencies ++= Seq(
-        "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test",
         specs2,
         scalazSpecs2,
-        scalacheck
+        scalacheck,
+        scalazScalacheck
       )
     )
   )
@@ -103,7 +104,12 @@ object ScalazContribBuild extends Build {
     base = file("validation-ext"),
     settings = standardSettings ++ Seq(
       name := "scalaz-contrib-validation",
-      libraryDependencies += specs2
+      libraryDependencies ++= Seq(
+        specs2,
+        scalazSpecs2,
+        scalacheck,
+        scalazScalacheck
+      )
     )
   )
 

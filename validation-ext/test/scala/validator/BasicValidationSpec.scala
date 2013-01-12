@@ -13,13 +13,13 @@ class BasicValidationSpec extends Specification {
   import basic._
 
   val errorMessage = "Generic Error Message"
-  val fail = Failure(errorMessage)
+  val fail = Some(errorMessage)
 
   "atMost validator" should {
     val atMost10 = atMost(10, errorMessage)
 
     "work for Int with implicit Ordering" in {
-      1 to 10   foreach { x => atMost10(x) must beEqualTo(Success(x)) }
+      1 to 10   foreach { x => atMost10(x) must beNone }
       11 to 100 foreach { x => atMost10(x) must beEqualTo(fail) }
     }
   }
@@ -28,7 +28,7 @@ class BasicValidationSpec extends Specification {
     val atLeast10 = atLeast(10, errorMessage)
 
     "pass for values greater than or equal to min" in {
-      (10 to 100).map(x => atLeast10(x) must beEqualTo(Success(x)))
+      (10 to 100).map(x => atLeast10(x) must beNone)
     }
     
     "fail for values less than min" in {
@@ -38,7 +38,7 @@ class BasicValidationSpec extends Specification {
 
   def equalTo5Test(f: Validator[String, Int]) = {
     "pass for equal values" in {
-      f(5) must beEqualTo(Success(5))
+      f(5) must beNone
     }
 
     "fail for values less than the value" in {
@@ -66,7 +66,7 @@ class BasicValidationSpec extends Specification {
     }
 
     "pass if in range" in {
-      (5 to 10).map(n => range5to10(n) must beEqualTo(Success(n)))
+      (5 to 10).map(n => range5to10(n) must beNone)
     }
 
     "fail if greater than range" in {
@@ -78,7 +78,7 @@ class BasicValidationSpec extends Specification {
     val max2 = maxLength(2, errorMessage)
 
     "pass when size is <= maxSize" in {
-      max2(List(1)) must beEqualTo(Success(List(1)))
+      max2(List(1)) must beNone
     }
 
     "fail when size is > maxSize" in {
@@ -88,7 +88,7 @@ class BasicValidationSpec extends Specification {
 
   "not empty" should {
     "pass when object is empty" in {
-      notEmpty(errorMessage)(List(1)) must beEqualTo(Success(List(1)))
+      notEmpty(errorMessage)(List(1)) must beNone
     }
     "fail when object is empty" in {
       notEmpty(errorMessage)(List()) must beEqualTo(fail)
@@ -98,7 +98,7 @@ class BasicValidationSpec extends Specification {
   "length is" should {
     val check = lengthIs(_ === 2, errorMessage)
     "pass when length is as specified" in {
-      check(List(1,2)) must beEqualTo(Success(List(1,2)))
+      check(List(1,2)) must beNone
     }
     "fail when length is not as specified" in {
       check(List(1,2,3)) must beEqualTo(fail)

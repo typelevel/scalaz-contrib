@@ -14,13 +14,13 @@ class StringValidationSpec extends Specification {
   import string._
 
   val errorMessage = "Generic Error Message"
-  val fail = Failure(errorMessage)
+  val fail = Some(errorMessage)
 
   "match pattern" should {
     val digitOnly = matchRegex("""^\d*$""".r, errorMessage)
 
     "succeed when the pattern is matched" in {
-      digitOnly("123456") must beEqualTo(Success("123456"))
+      digitOnly("123456") must beNone
     }
 
     "fail when the pattern is not matched" in {
@@ -37,7 +37,7 @@ class StringValidationSpec extends Specification {
     }
 
     "succeed when the string is not blank" in {
-      List("1", "              1     ").foreach(s => failNotBlank(s) must beEqualTo(Success(s)))
+      List("1", "              1     ").foreach(s => failNotBlank(s) must beNone)
     }
   }
 
@@ -50,7 +50,7 @@ class StringValidationSpec extends Specification {
         "4012888888881881", "378282246310005", "371449635398431", "378734493671000", "38520000023237", "30569309025904",
         "6011111111111117", "6011000990139424", "3530111333300000", "3566002020360505"
       ) foreach { num =>
-        check(num) must beEqualTo(Success(num))
+        check(num) must beNone
       }
     }
 
@@ -71,14 +71,15 @@ class StringValidationSpec extends Specification {
     val eqThree = strLength(3, errorMessage)
 
     "succeed when correct" in {
-      List("", "1", "12", "123") foreach {x => maxThree(x) must beEqualTo(Success(x))}
-      List("123", "1234", "12345") foreach {x => minThree(x) must beEqualTo(Success(x))}
-      eqThree("123") must beEqualTo(Success("123"))
+      List("", "1", "12", "123") foreach { x => maxThree(x) must beNone }
+      List("123", "1234", "12345") foreach { x => minThree(x) must beNone }
+      eqThree("123") must beNone
     }
+
     "fail when invalid" in {
-      List("1234", "12345") foreach {x => maxThree(x) must beEqualTo(Failure(errorMessage))}
-      List("", "1", "12") foreach {x => minThree(x) must beEqualTo(Failure(errorMessage))}
-      List("", "1", "12", "1234", "12345") foreach {num => eqThree(num) must beEqualTo(Failure(errorMessage))}
+      List("1234", "12345") foreach { x => maxThree(x) must beEqualTo(fail) }
+      List("", "1", "12") foreach { x => minThree(x) must beEqualTo(fail) }
+      List("", "1", "12", "1234", "12345") foreach { num => eqThree(num) must beEqualTo(fail) }
     }
   }
 
