@@ -72,7 +72,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       publishArtifact := false
     ),
-    aggregate = Seq(scala210, validationExtension)
+    aggregate = Seq(scala210, dispatch, validationExtension, undo)
   )
 
   lazy val scala210 = Project(
