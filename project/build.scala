@@ -1,6 +1,8 @@
 import sbt._
 import Keys._
 
+import sbtrelease.ReleasePlugin._
+
 object ScalazContribBuild extends Build {
 
   val scalazVersion = "7.0.0-M7"
@@ -10,9 +12,8 @@ object ScalazContribBuild extends Build {
   val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1" % "test"
   val scalazScalacheck = "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
 
-  lazy val standardSettings = Defaults.defaultSettings ++ Seq(
+  lazy val standardSettings = Defaults.defaultSettings ++ releaseSettings ++ Seq(
     organization := "org.typelevel",
-    version := "0.1-SNAPSHOT",
 
     scalaVersion := "2.10.0",
     scalacOptions ++= Seq(
