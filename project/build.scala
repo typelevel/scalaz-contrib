@@ -88,6 +88,16 @@ object ScalazContribBuild extends Build {
     )
   )
 
+  lazy val dispatch = Project(
+    id = "dispatch",
+    base = file("dispatch"),
+    settings = standardSettings ++ Seq(
+      name := "scalaz-dispatch",
+      libraryDependencies +=
+        "net.databinder.dispatch" %% "dispatch-core" % "0.9.5"
+    )
+  )
+
   lazy val validationExtension = Project(
     id = "validation-ext",
     base = file("validation-ext"),
