@@ -13,14 +13,13 @@ class BasicValidationSpec extends Specification {
   import basic._
 
   val errorMessage = "Generic Error Message"
-  val fail = Some(errorMessage)
 
   "atMost validator" should {
     val atMost10 = atMost(10, errorMessage)
 
     "work for Int with implicit Ordering" in {
       1 to 10   foreach { x => atMost10(x) must beNone }
-      11 to 100 foreach { x => atMost10(x) must beEqualTo(fail) }
+      11 to 100 foreach { x => atMost10(x) must beSome(errorMessage) }
     }
   }
 
@@ -32,7 +31,7 @@ class BasicValidationSpec extends Specification {
     }
     
     "fail for values less than min" in {
-      (-110 to 9).map(x => atLeast10(x) must beEqualTo(fail))
+      (-110 to 9).map(x => atLeast10(x) must beSome(errorMessage))
     }
   }
 
@@ -42,11 +41,11 @@ class BasicValidationSpec extends Specification {
     }
 
     "fail for values less than the value" in {
-      (0 to 4).map(x => f(x) must beEqualTo(fail))
+      (0 to 4).map(x => f(x) must beSome(errorMessage))
     }
 
     "fail for values more than the value" in {
-      (6 to 100).map(x => f(x) must beEqualTo(fail))
+      (6 to 100).map(x => f(x) must beSome(errorMessage))
     }
   }
 
@@ -62,7 +61,7 @@ class BasicValidationSpec extends Specification {
     val range5to10 = range(5,10, errorMessage)
 
     "fail if less than range" in {
-      (0 to 4).map(range5to10(_) must beEqualTo(fail))
+      (0 to 4).map(range5to10(_) must beSome(errorMessage))
     }
 
     "pass if in range" in {
@@ -70,7 +69,7 @@ class BasicValidationSpec extends Specification {
     }
 
     "fail if greater than range" in {
-      (11 to 100).map(range5to10(_) must beEqualTo(fail))
+      (11 to 100).map(range5to10(_) must beSome(errorMessage))
     }
   }
 
@@ -82,7 +81,7 @@ class BasicValidationSpec extends Specification {
     }
 
     "fail when size is > maxSize" in {
-      max2(List(1, 2, 3)) must beEqualTo(fail)
+      max2(List(1, 2, 3)) must beSome(errorMessage)
     }
   }
 
@@ -91,7 +90,7 @@ class BasicValidationSpec extends Specification {
       notEmpty(errorMessage)(List(1)) must beNone
     }
     "fail when object is empty" in {
-      notEmpty(errorMessage)(List()) must beEqualTo(fail)
+      notEmpty(errorMessage)(List()) must beSome(errorMessage)
     }
   }
 
@@ -101,7 +100,7 @@ class BasicValidationSpec extends Specification {
       check(List(1,2)) must beNone
     }
     "fail when length is not as specified" in {
-      check(List(1,2,3)) must beEqualTo(fail)
+      check(List(1,2,3)) must beSome(errorMessage)
     }
   }
 

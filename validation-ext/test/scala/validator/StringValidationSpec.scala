@@ -14,7 +14,6 @@ class StringValidationSpec extends Specification {
   import string._
 
   val errorMessage = "Generic Error Message"
-  val fail = Some(errorMessage)
 
   "match pattern" should {
     val digitOnly = matchRegex("""^\d*$""".r, errorMessage)
@@ -24,7 +23,7 @@ class StringValidationSpec extends Specification {
     }
 
     "fail when the pattern is not matched" in {
-      digitOnly("123a") must beEqualTo(fail)
+      digitOnly("123a") must beSome(errorMessage)
     }
   }
 
@@ -32,8 +31,8 @@ class StringValidationSpec extends Specification {
     val failNotBlank = notBlank(errorMessage)
 
     "fail when the string is blank" in {
-      failNotBlank("") must beEqualTo(fail)
-      failNotBlank("     ") must beEqualTo(fail)
+      failNotBlank("") must beSome(errorMessage)
+      failNotBlank("     ") must beSome(errorMessage)
     }
 
     "succeed when the string is not blank" in {
@@ -60,7 +59,7 @@ class StringValidationSpec extends Specification {
         "4012888878881881", "378282246300005", "371449635398432", "378734493671030", "38520000023231", "30569309125904",
         "6011111111114117", "6011000990132424", "3530111333303000", "3566002020260505"
       ) foreach { num =>
-        check(num) must beEqualTo(fail)
+        check(num) must beSome(errorMessage)
       }
     }
   }
@@ -77,9 +76,9 @@ class StringValidationSpec extends Specification {
     }
 
     "fail when invalid" in {
-      List("1234", "12345") foreach { x => maxThree(x) must beEqualTo(fail) }
-      List("", "1", "12") foreach { x => minThree(x) must beEqualTo(fail) }
-      List("", "1", "12", "1234", "12345") foreach { num => eqThree(num) must beEqualTo(fail) }
+      List("1234", "12345") foreach { x => maxThree(x) must beSome(errorMessage) }
+      List("", "1", "12") foreach { x => minThree(x) must beSome(errorMessage) }
+      List("", "1", "12", "1234", "12345") foreach { num => eqThree(num) must beSome(errorMessage) }
     }
   }
 
