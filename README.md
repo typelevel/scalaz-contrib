@@ -14,13 +14,11 @@ This library is currently available for Scala 2.10 only.
 To use the latest version, include the following in your `build.sbt`:
 
 ```scala
-resolvers += Resolver.sonatypeRepo("snapshots")
-
 libraryDependencies ++= Seq(
-  "org.typelevel" % "scalaz-contrib-210" % "0.1",
-  "org.typelevel" % "scalaz-contrib-validation" % "0.1",
-  "org.typelevel" % "scalaz-contrib-undo" % "0.1",
-  "org.typelevel" % "scalaz-dispatch" % "0.1"
+  "org.typelevel" %% "scalaz-contrib-210" % "0.1",
+  "org.typelevel" %% "scalaz-contrib-validation" % "0.1",
+  "org.typelevel" %% "scalaz-contrib-undo" % "0.1",
+  "org.typelevel" %% "scalaz-dispatch" % "0.1"
 )
 ```
 
