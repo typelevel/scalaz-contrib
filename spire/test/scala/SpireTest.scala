@@ -1,9 +1,11 @@
 package scalaz.contrib
 package spire
 
-import _root_.spire.algebra.{Laws, LawChecker}
+import org.specs2.scalaz.Spec
 
-class Test extends LawChecker {
+import _root_.spire.algebra.Laws
+
+class SpireTest extends Spec {
 
   import scalaz.@@
   import scalaz.Tags.Multiplication
