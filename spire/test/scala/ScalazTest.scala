@@ -22,7 +22,12 @@ class ScalazTest extends Spec {
   // to mimic the structure of spire-scalacheck-binding
 
   checkAll("Int", monoid.laws[Int](algebra.Ring[Int].additive.asScalaz, implicitly, implicitly))
-  checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](algebra.Ring[Int].asScalaz, implicitly, implicitly))
+
+  // At this point, I expected an ambiguity error, but it fails to compile
+  // nonetheless. (expected: Monoid, found: Tuple2)
+  // checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](algebra.Ring[Int].asScalaz, implicitly, implicitly))
+
+  checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication]((algebra.Ring[Int]: algebra.MultiplicativeMonoid[Int]).asScalaz, implicitly, implicitly))
 
 }
 

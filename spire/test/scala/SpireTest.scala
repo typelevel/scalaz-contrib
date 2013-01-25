@@ -18,6 +18,8 @@ class SpireTest extends Spec {
   checkAll("Map[String, Int]", Laws[Map[String, Int]].monoid(scalaz.Monoid[Map[String, Int]].asSpire))
 
   checkAll("Int @@ Multiplication", Laws[Int].multiplicativeMonoid(scalaz.Monoid[Int @@ Multiplication].asSpire))
+
+  checkAll("Int", Laws[Int].rig((scalaz.Monoid[Int], scalaz.Monoid[Int @@ Multiplication]).asSpire))
 }
 
 // vim: expandtab:ts=2:sw=2
