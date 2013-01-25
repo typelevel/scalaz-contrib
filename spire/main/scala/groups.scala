@@ -5,12 +5,14 @@ import _root_.spire.algebra
 
 object Groups {
 
+  trait Ops[F, +SP[_], +SZ[_]] {
+    def asSpire: SP[F]
+    def asScalaz: SZ[F]
+  }
+
   // Semigroups
 
-  trait SemigroupOps[F] {
-    def asSpire: algebra.Semigroup[F]
-    def asScalaz: scalaz.Semigroup[F]
-
+  trait SemigroupOps[F] extends Ops[F, algebra.Semigroup, scalaz.Semigroup] {
     def asSpireAdditive: algebra.AdditiveSemigroup[F] =
       algebra.Additive(asSpire)
 
@@ -21,7 +23,7 @@ object Groups {
   trait SpireSemigroupOps[F] extends SemigroupOps[F] {
     override def asScalaz: scalaz.Semigroup[F] = new ScalazSemigroup {}
 
-    private[scalaz] trait ScalazSemigroup extends scalaz.Semigroup[F] {
+    trait ScalazSemigroup extends scalaz.Semigroup[F] {
       def append(f1: F, f2: => F) = asSpire.op(f1, f2)
     }
   }
@@ -29,17 +31,14 @@ object Groups {
   trait ScalazSemigroupOps[F] extends SemigroupOps[F] {
     override def asSpire: algebra.Semigroup[F] = new SpireSemigroup {}
 
-    private[scalaz] trait SpireSemigroup extends algebra.Semigroup[F] {
+    trait SpireSemigroup extends algebra.Semigroup[F] {
       def op(x: F, y: F) = asScalaz.append(x, y)
     }
   }
 
   // Monoids
 
-  trait MonoidOps[F] extends SemigroupOps[F] {
-    def asSpire: algebra.Monoid[F]
-    def asScalaz: scalaz.Monoid[F]
-
+  trait MonoidOps[F] extends SemigroupOps[F] with Ops[F, algebra.Monoid, scalaz.Monoid] {
     override def asSpireAdditive: algebra.AdditiveMonoid[F] =
       algebra.Additive(asSpire)
 
@@ -50,7 +49,7 @@ object Groups {
   trait SpireMonoidOps[F] extends MonoidOps[F] with SpireSemigroupOps[F] {
     override def asScalaz: scalaz.Monoid[F] = new ScalazMonoid {}
 
-    private[scalaz] trait ScalazMonoid extends scalaz.Monoid[F] with ScalazSemigroup {
+    trait ScalazMonoid extends scalaz.Monoid[F] with ScalazSemigroup {
       def zero = asSpire.id
     }
   }
@@ -58,7 +57,7 @@ object Groups {
   trait ScalazMonoidOps[F] extends MonoidOps[F] with ScalazSemigroupOps[F] {
     override def asSpire: algebra.Monoid[F] = new SpireMonoid {}
 
-    private[scalaz] trait SpireMonoid extends algebra.Monoid[F] with SpireSemigroup {
+    trait SpireMonoid extends algebra.Monoid[F] with SpireSemigroup {
       def id = asScalaz.zero
     }
   }
@@ -67,14 +66,14 @@ object Groups {
 
 private[scalaz] trait GroupOps0 {
   import Groups._
-  implicit class SpireSemigroup2Scalaz[F](val asSpire: algebra.Semigroup[F]) extends SpireSemigroupOps[F]
-  implicit class ScalazSemigroup2Spire[F](val asScalaz: scalaz.Semigroup[F]) extends ScalazSemigroupOps[F]
+  implicit class SpireSemigroup2Ops[F](val asSpire: algebra.Semigroup[F]) extends SpireSemigroupOps[F]
+  implicit class ScalazSemigroup2Ops[F](val asScalaz: scalaz.Semigroup[F]) extends ScalazSemigroupOps[F]
 }
 
 private[scalaz] trait GroupOps extends GroupOps0 {
   import Groups._
-  implicit class SpireMonoid2Scalaz[F](val asSpire: algebra.Monoid[F]) extends SpireMonoidOps[F]
-  implicit class ScalazMonoid2Spire[F](val asScalaz: scalaz.Monoid[F]) extends ScalazMonoidOps[F]
+  implicit class SpireMonoid2Ops[F](val asSpire: algebra.Monoid[F]) extends SpireMonoidOps[F]
+  implicit class ScalazMonoid2Ops[F](val asScalaz: scalaz.Monoid[F]) extends ScalazMonoidOps[F]
 }
 
 object groups extends GroupOps
