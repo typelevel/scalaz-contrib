@@ -92,5 +92,53 @@ res0: Option[Int] = Some(4)
 This project provides bindings (instances) for the following libraries:
 
 * Dispatch Reboot 0.9.5
+* spire 0.3.0-RC2
 
 There are more to come, so stay tuned!
+
+#### spire
+
+Spire provides powerful abstractions for numeric programming in Scala, including a full-stack hierarchy of algebraic type classes such as `Semigroup`, `Monoid`, and `Ring`. Scalaz only has the former two (and `Group`, but this will go away in the future). This library not only provides spire instances for scalaz data types, but also mappings between type classes where it makes sense. Let the example speak for itself:
+
+```scala
+import spire.algebra._
+import spire.implicits._
+import scalaz.std.anyVal._
+import scalaz.@@
+import scalaz.Tags._
+import scalaz.contrib.spire._
+
+// scalaz → spire
+val M = scalaz.Monoid[Int]
+val MMult = scalaz.Monoid[Int @@ Multiplication]
+
+// `asSpire` converts untagged instances to a 'regular' class
+val m1: Monoid[Int] = M.asSpire
+
+// instances tagged with with `Multiplication` will be converted to their
+// `Multiplicative` counterparts
+val m2: MultiplicativeMonoid[Int] = MMult.asSpire
+
+// untagged instances can also be converted into additive/multiplicative
+// instances directly
+val am: AdditiveMonoid[Int] = M.asSpireAdditive
+val mm: MultiplicativeMonoid[Int] = M.asSpireMultiplicative
+
+// pairs of instances
+val r: Rig[Int] = (M, MMult).asSpire
+
+// spire → scalaz
+val R = Rig[Int]
+val AddM: AdditiveMonoid[Int] = R
+val MulM: MultiplicativeMonoid[Int] = R
+
+// one-operator classes
+val m1: scalaz.Monoid[Int] = AddM.asScalaz
+val m2: scalaz.Monoid[Int @@ Multiplication] = MulM.asScalaz
+
+// two-operator classes
+val (ma: scalaz.Monoid[Int], mb: scalaz.Monoid[Int @@ Multiplication]) =
+  R.asScalaz
+```
+
+Conversions are also provided for semigroups and semirings.
