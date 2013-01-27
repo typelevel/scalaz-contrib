@@ -24,10 +24,10 @@ object Rings {
   trait SemiringOps[F] extends Ops[F, algebra.Semiring, scalaz.Semigroup, scalaz.Semigroup]
 
   trait SpireSemiringOps[F] extends SemiringOps[F] {
-    override def asScalaz = (
+    // I'm not sure why this type annotation is necessary
+    override def asScalaz: (scalaz.Semigroup[F], scalaz.Semigroup[F @@ Multiplication]) = (
       asSpire.additive.asScalaz,
-      // I'm not sure why this type annotation is necessary
-      SpireMulSemigroup2Ops(asSpire).asScalaz: scalaz.Semigroup[F @@ Multiplication]
+      SpireMulSemigroup2Ops(asSpire).asScalaz
     )
   }
 

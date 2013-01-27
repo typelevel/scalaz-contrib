@@ -14,6 +14,10 @@ class ScalazTest extends Spec {
   import _root_.spire.algebra
   import _root_.spire.implicits._
 
+  val R = algebra.Rig[Int]
+  val AddM: algebra.AdditiveMonoid[Int] = R
+  val MulM: algebra.MultiplicativeMonoid[Int] = R
+
   // This is a bit inconvenient as we have to pass all necessary instances
   // (the instance under test, `Eq` and `Arbitrary`) to the same method.
   // If we want to specify the instance under test explicitly, we have to
@@ -21,13 +25,16 @@ class ScalazTest extends Spec {
   // TODO investigate whether we should change scalaz-scalacheck-binding
   // to mimic the structure of spire-scalacheck-binding
 
-  checkAll("Int", monoid.laws[Int](algebra.Ring[Int].additive.asScalaz, implicitly, implicitly))
+  checkAll("Int", monoid.laws[Int](AddM.asScalaz, implicitly, implicitly))
+  checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](MulM.asScalaz, implicitly, implicitly))
 
-  // At this point, I expected an ambiguity error, but it fails to compile
-  // nonetheless. (expected: Monoid, found: Tuple2)
-  // checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](algebra.Ring[Int].asScalaz, implicitly, implicitly))
+  // The following (correctly) failes to compile
+  // (expected: Monoid, found: Tuple2)
+  // checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](R.asScalaz, implicitly, implicitly))
 
-  checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication]((algebra.Ring[Int]: algebra.MultiplicativeMonoid[Int]).asScalaz, implicitly, implicitly))
+  // this should compile
+  val (ma, mb) = R.asScalaz
+
 
 }
 
