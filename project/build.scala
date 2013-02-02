@@ -76,7 +76,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       publishArtifact := false
     ),
-    aggregate = Seq(scala210, dispatch, validationExtension, undo)
+    aggregate = Seq(scala210, dispatch, spire, validationExtension, undo)
   )
 
   lazy val scala210 = Project(
@@ -100,6 +100,20 @@ object ScalazContribBuild extends Build {
       name := "scalaz-dispatch",
       libraryDependencies +=
         "net.databinder.dispatch" %% "dispatch-core" % "0.9.5"
+    )
+  )
+
+  lazy val spire = Project(
+    id = "spire",
+    base = file("spire"),
+    settings = standardSettings ++ Seq(
+      name := "scalaz-spire",
+      libraryDependencies ++= Seq(
+        "org.spire-math" %% "spire" % "0.3.0-RC2",
+        "org.spire-math" %% "spire-scalacheck-binding" % "0.3.0-RC2" % "test",
+        scalazSpecs2,
+        scalazScalacheck
+      )
     )
   )
 
