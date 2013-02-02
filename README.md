@@ -22,6 +22,18 @@ libraryDependencies ++= Seq(
 )
 ```
 
+For the in-progess features, use the following:
+
+```scala
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "scalaz-spire" % "0.2-SNAPSHOT"
+)
+```
+
+(Of course, the submodules published as 0.1 are also available as `0.2-SNAPSHOT`.)
+
 Examples
 --------
 
