@@ -28,8 +28,8 @@ class FutureTest extends Spec {
   implicit def FutureArbitrary[A](implicit a: Arbitrary[A]): Arbitrary[Future[A]] = implicitly[Arbitrary[A]] map { x => Future(x) }
 
   checkAll(monad.laws[Future])
+  checkAll(monoid.laws[Future[Int]])
   checkAll(monoid.laws[Future[Int @@ Multiplication]])
-  checkAll(group.laws[Future[Int]])
 
   // Scope these away from the rest as Copointed[Future] is a little evil.
   // Should fail to compile by default: implicitly[Copointed[Future]]

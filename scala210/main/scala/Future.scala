@@ -8,18 +8,14 @@ import scala.concurrent.duration.Duration
 
 trait FutureInstances1 {
 
-  private[scalaz] class FutureMonoid[A](implicit m: Monoid[A], executionContext: ExecutionContext) extends Monoid[Future[A]] {
-
-    def zero: Future[A] = Future(m.zero)
-
+  private[scalaz] class FutureSemigroup[A](implicit m: Semigroup[A], executionContext: ExecutionContext) extends Semigroup[Future[A]] {
     def append(f1: Future[A], f2: => Future[A]): Future[A] = for {
       first <- f1
       second <- f2
     } yield m.append(first, second)
-
   }
 
-  implicit def FutureMonoid[A](implicit m: Monoid[A], executionContext: ExecutionContext): Monoid[Future[A]] = new FutureMonoid[A]
+  implicit def FutureSemigroup[A](implicit m: Semigroup[A], executionContext: ExecutionContext): Semigroup[Future[A]] = new FutureSemigroup[A]
 
 }
 
@@ -48,9 +44,11 @@ trait FutureInstances extends FutureInstances1 {
   }
 
 
-  implicit def FutureGroup[A](implicit g: Group[A], executionContext: ExecutionContext): Group[Future[A]] = new FutureMonoid[A] with Group[Future[A]] {
-    def inverse(f: Future[A]): Future[A] = f.map(value => g.inverse(value))
+  private[scalaz] class FutureMonoid[A](implicit m: Monoid[A], executionContext: ExecutionContext) extends FutureSemigroup[A] with Monoid[Future[A]] {
+    def zero: Future[A] = Future(m.zero)
   }
+
+  implicit def FutureMonoid[A](implicit g: Monoid[A], executionContext: ExecutionContext): Monoid[Future[A]] = new FutureMonoid[A]
 
 }
 
