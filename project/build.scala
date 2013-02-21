@@ -28,6 +28,10 @@ object ScalazContribBuild extends Build {
       Resolver.sonatypeRepo("snapshots"),
       Resolver.sonatypeRepo("releases")
     ),
+    // https://github.com/sbt/sbt/issues/603
+    conflictWarning ~= { cw =>
+      cw.copy(filter = (id: ModuleID) => true, group = (id: ModuleID) => id.organization + ":" + id.name, level = Level.Error, failOnConflict = true)
+    },
 
     sourceDirectory <<= baseDirectory(identity),
 
@@ -123,7 +127,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-lift",
       libraryDependencies ++= Seq(
-        "net.liftweb" %% "lift-common" % "2.5-M4",
+        "net.liftweb" %% "lift-common" % "2.5-M4" exclude("org.specs2", "specs2_2.10"),
         scalazSpecs2,
         scalazScalacheck
       )
