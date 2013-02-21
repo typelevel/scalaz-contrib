@@ -15,10 +15,11 @@ To use the latest version, include the following in your `build.sbt`:
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "scalaz-contrib-210" % "0.1",
-  "org.typelevel" %% "scalaz-contrib-validation" % "0.1",
-  "org.typelevel" %% "scalaz-contrib-undo" % "0.1",
-  "org.typelevel" %% "scalaz-dispatch" % "0.1"
+  "org.typelevel" %% "scalaz-contrib-210" % "0.1.1",
+  "org.typelevel" %% "scalaz-contrib-validation" % "0.1.1",
+  "org.typelevel" %% "scalaz-contrib-undo" % "0.1.1",
+  "org.typelevel" %% "scalaz-dispatch" % "0.1.1",
+  "org.typelevel" %% "scalaz-spire" % "0.1.1"
 )
 ```
 
@@ -26,13 +27,9 @@ For the in-progess features, use the following:
 
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
-
-libraryDependencies ++= Seq(
-  "org.typelevel" %% "scalaz-spire" % "0.2-SNAPSHOT"
-)
 ```
 
-(Of course, the submodules published as 0.1 are also available as `0.2-SNAPSHOT`.)
+and depend on version `0.2-SNAPSHOT` instead of `0.1.1`.
 
 Examples
 --------
@@ -104,7 +101,7 @@ res0: Option[Int] = Some(4)
 This project provides bindings (instances) for the following libraries:
 
 * Dispatch Reboot 0.9.5
-* spire 0.3.0-RC2
+* spire 0.3.0
 
 There are more to come, so stay tuned!
 
