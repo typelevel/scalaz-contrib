@@ -102,6 +102,7 @@ This project provides bindings (instances) for the following libraries:
 
 * Dispatch Reboot 0.9.5
 * spire 0.3.0
+* Lift 2.5-M4
 
 There are more to come, so stay tuned!
 

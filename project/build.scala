@@ -117,6 +117,19 @@ object ScalazContribBuild extends Build {
     )
   )
 
+  lazy val lift = Project(
+    id = "lift",
+    base = file("lift"),
+    settings = standardSettings ++ Seq(
+      name := "scalaz-lift",
+      libraryDependencies ++= Seq(
+        "net.liftweb" %% "lift-common" % "2.5-M4",
+        scalazSpecs2,
+        scalazScalacheck
+      )
+    )
+  )
+
   lazy val validationExtension = Project(
     id = "validation-ext",
     base = file("validation-ext"),
