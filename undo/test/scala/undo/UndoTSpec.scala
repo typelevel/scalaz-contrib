@@ -1,13 +1,16 @@
+package scalaz.contrib
+package undo
+
 import scalaz.syntax.monad._
 import scalaz.std.option._
-import scalaz.undo.UndoT
-import scalaz.undo.UndoT._
 
 import org.specs2.mutable.Specification
 
 object UndoTSpec extends Specification {
   // TODO: Omitting the type parameters on hput leads to a compiler infinite loop
   // if UndoT.undoTMonadState is imported.
+
+  import UndoT._
 
   val result: UndoT[Option, Int, _] =
     for {
