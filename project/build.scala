@@ -80,7 +80,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       publishArtifact := false
     ),
-    aggregate = Seq(scala210, dispatch, spire, validationExtension, undo)
+    aggregate = Seq(scala210, dispatch, lift, spire, validationExtension, undo)
   )
 
   lazy val scala210 = Project(
@@ -127,7 +127,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-lift",
       libraryDependencies ++= Seq(
-        "net.liftweb" %% "lift-common" % "2.5-M4" exclude("org.specs2", "specs2_2.10"),
+        "net.liftweb" %% "lift-common" % "2.5-RC1",
         scalazSpecs2,
         scalazScalacheck
       )
