@@ -12,7 +12,6 @@ class ScalazTest extends Spec {
   import scalaz.@@
   import scalaz.Tags.Multiplication
   import _root_.spire.algebra
-  import _root_.spire.implicits._
 
   val R = algebra.Rig[Int]
   val AddM: algebra.AdditiveMonoid[Int] = R
@@ -30,11 +29,44 @@ class ScalazTest extends Spec {
 
   // The following (correctly) failes to compile
   // (expected: Monoid, found: Tuple2)
-  // checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](R.asScalaz, implicitly, implicitly))
+  //checkAll("Int @@ Multiplication", monoid.laws[Int @@ Multiplication](R.asScalaz, implicitly, implicitly))
 
   // this should compile
   val (ma, mb) = R.asScalaz
 
+
+  // test compilation for auto-conversions
+  {
+    import conversions.toScalaz._
+    import _root_.spire.math.UInt
+
+    {
+      implicit val S: algebra.Rig[UInt] = algebra.Rig.UIntIsRig
+
+      scalaz.Monoid[UInt]
+      scalaz.Monoid[UInt @@ Multiplication]
+      scalaz.Semigroup[UInt]
+      scalaz.Semigroup[UInt @@ Multiplication]
+    }
+    {
+      implicit val S: algebra.AdditiveMonoid[UInt] = algebra.Rig.UIntIsRig
+
+      scalaz.Monoid[UInt]
+      scalaz.Semigroup[UInt]
+
+      // should fail:
+      //scalaz.Monoid[UInt @@ Multiplication]
+    }
+    {
+      implicit val S: algebra.MultiplicativeMonoid[UInt] = algebra.Rig.UIntIsRig
+
+      scalaz.Monoid[UInt @@ Multiplication]
+      scalaz.Semigroup[UInt @@ Multiplication]
+
+      // should fail:
+      //scalaz.Monoid[Foo]
+    }
+  }
 
 }
 

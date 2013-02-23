@@ -108,47 +108,45 @@ There are more to come, so stay tuned!
 
 #### spire
 
-Spire provides powerful abstractions for numeric programming in Scala, including a full-stack hierarchy of algebraic type classes such as `Semigroup`, `Monoid`, and `Ring`. Scalaz only has the former two (and `Group`, but this will go away in the future). This library not only provides spire instances for scalaz data types, but also mappings between type classes where it makes sense. Let the example speak for itself:
+Spire provides powerful abstractions for numeric programming in Scala, including a full-stack hierarchy of algebraic type classes such as `Semigroup`, `Monoid`, and `Ring`. Scalaz only has the former two, but instead lots of instances. This library provides mappings between type classes where it makes sense.
 
-```scala
-import spire.algebra._
-import spire.implicits._
-import scalaz.std.anyVal._
-import scalaz.@@
-import scalaz.Tags._
-import scalaz.contrib.spire._
+There are two modes of conversion, *manual* and *automatic*:
 
-// scalaz → spire
-val M = scalaz.Monoid[Int]
-val MMult = scalaz.Monoid[Int @@ Multiplication]
+* Importing `scalaz.contrib.spire._` enables the *manual* mode. It adds the methods `asSpire` and `asScalaz` on type class instances.
+* Importing either `scalaz.contrib.spire.conversions.toSpire._` or `scalaz.contrib.spire.conversions.toScalaz._` (importing both will lead to anarchy) enables the *automatic* mode. It provides implicit conversions for type class instances. This mode does not provide conversions for two-operator classes (i.e. for `Rig` and `Semiring`).
 
-// `asSpire` converts untagged instances to a 'regular' class
-val m1: Monoid[Int] = M.asSpire
+It is possible (but not recommended) to enable both modes.
 
-// instances tagged with with `Multiplication` will be converted to their
-// `Multiplicative` counterparts
-val m2: MultiplicativeMonoid[Int] = MMult.asSpire
+To understand which conversions "make sense", consider the kinds of type classes offered by scalaz and spire:
 
-// untagged instances can also be converted into additive/multiplicative
-// instances directly
-val am: AdditiveMonoid[Int] = M.asSpireAdditive
-val mm: MultiplicativeMonoid[Int] = M.asSpireMultiplicative
+* Scalaz provides only one-operator classes, namely `Semigroup` and `Monoid`. To make a distinction between additive and multiplicative operations, scalaz uses _tags_. Hence, a `Semigroup[A]` denotes an unspecified operation, and `Semigroup[A @@ Multiplication]` a multiplicative operation.
+* Spire provides one- and two-operator classes. The one-operator classes come in three flavours, e.g. `Semigroup`, `AdditiveSemigroup` and `MultiplicativeSemigroup` (same for `Monoid`, ...). As in scalaz, a plain `Semigroup` conveys nothing about the type of operation, whereas the other two should be used for additive and multiplicative operations, respectively. Spire's two-operator classes inherit from the additive and multiplicative variants, e.g. `Semiring` extends `AdditiveSemigroup` and `MultiplicativeSemigroup`. Also, these classes should guarantee that these two distinct operations relate to each other.
 
-// pairs of instances
-val r: Rig[Int] = (M, MMult).asSpire
+Thus, in *manual* mode, the following conversions are available:
 
-// spire → scalaz
-val R = Rig[Int]
-val AddM: AdditiveMonoid[Int] = R
-val MulM: MultiplicativeMonoid[Int] = R
+* from scalaz one-operator to spire one-operator:
+  ```scala
+  S.asSpire // Semigroup → Semigroup
+  S.asSpireAdditive // ... → AdditiveSemigroup
+  S.asSpireMultiplicative // ... → MultiplicativeSemigroup
 
-// one-operator classes
-val m1: scalaz.Monoid[Int] = AddM.asScalaz
-val m2: scalaz.Monoid[Int @@ Multiplication] = MulM.asScalaz
+  SMult.asSpire // Semigroup @@ Multiplication → MultiplicativeSemigroup
+  ```
+* from spire one-operator to scalaz one-operator:
+  ```scala
+  // Semigroup and AdditiveSemigroup → Semigroup
+  // MultiplicativeSemigroup → Semigroup @@ Multiplication
+  S.asScalaz
+  ```
 
-// two-operator classes
-val (ma: scalaz.Monoid[Int], mb: scalaz.Monoid[Int @@ Multiplication]) =
-  R.asScalaz
-```
+These operations are also available in *automatic* mode, without the need to call `asXY`.
 
-Conversions are also provided for semigroups and semirings.
+* from scalaz one-operator to spire two-operator:
+  ```scala
+  // (Semigroup, Semigroup @@ Multiplication) → Semiring
+  (S, SMult).asSpire
+  ```
+
+The other direction is for free since the two-operator classes extend the one-operator classes. This operation is not available in *automatic* mode, since there is no guarantee that two independent scalaz instances obey the necessary laws to form a two-operator class.
+
+Of course, the above mentioned conversions also work for `Monoid` and `Rig`.

@@ -3,6 +3,7 @@ package spire
 
 import org.specs2.scalaz.Spec
 
+import _root_.spire.algebra
 import _root_.spire.algebra.Laws
 
 class SpireTest extends Spec {
@@ -25,6 +26,35 @@ class SpireTest extends Spec {
   // some more instances
   checkAll("Map[String, Int]", Laws[Map[String, Int]].monoid(scalaz.Monoid[Map[String, Int]].asSpire))
   checkAll("List[Int]", Laws[List[Int]].monoid(scalaz.Monoid[List[Int]].asSpire))
+
+  // test compilation for auto-conversions
+  {
+    import conversions.toSpire._
+
+    trait Foo
+
+    {
+      implicit val S: scalaz.Monoid[Foo] = null
+
+      implicitly[algebra.Monoid[Foo]]
+      implicitly[algebra.AdditiveMonoid[Foo]]
+      implicitly[algebra.Semigroup[Foo]]
+      implicitly[algebra.AdditiveSemigroup[Foo]]
+
+      // should fail:
+      //implicitly[algebra.MultiplicativeMonoid[Foo]]
+    }
+    {
+      implicit val S: scalaz.Monoid[Foo @@ Multiplication] = null
+
+      implicitly[algebra.MultiplicativeMonoid[Foo]]
+      implicitly[algebra.MultiplicativeSemigroup[Foo]]
+
+      // should fail:
+      //implicitly[algebra.Monoid[Foo]]
+      //implicitly[algebra.AdditiveMonoid[Foo]]
+    }
+  }
 
 }
 
