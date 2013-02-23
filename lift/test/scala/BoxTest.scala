@@ -14,7 +14,7 @@ import scalaz.std.AllInstances._
 
 import net.liftweb.common.{Box, Failure}
 
-class TryTest extends Spec {
+class BoxTest extends Spec {
 
   import scalaz.contrib.lift._
 
