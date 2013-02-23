@@ -142,6 +142,7 @@ Thus, in *manual* mode, the following conversions are available:
 These operations are also available in *automatic* mode, without the need to call `asXY`.
 
 * from scalaz one-operator to spire two-operator:
+
   ```scala
   // (Semigroup, Semigroup @@ Multiplication) → Semiring
   (S, SMult).asSpire
