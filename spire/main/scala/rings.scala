@@ -74,6 +74,4 @@ private[scalaz] trait RingOps extends RingOps0 {
   implicit class ScalazRig2Ops[F](val asScalaz: (scalaz.Monoid[F], scalaz.Monoid[F @@ Multiplication])) extends ScalazRigOps[F]
 }
 
-object rings extends RingOps
-
 // vim: expandtab:ts=2:sw=2

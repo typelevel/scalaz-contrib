@@ -76,6 +76,4 @@ private[scalaz] trait GroupOps extends GroupOps0 {
   implicit class ScalazMonoid2Ops[F](val asScalaz: scalaz.Monoid[F]) extends ScalazMonoidOps[F]
 }
 
-object groups extends GroupOps
-
 // vim: expandtab:ts=2:sw=2

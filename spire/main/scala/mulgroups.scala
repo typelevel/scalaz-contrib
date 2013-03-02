@@ -67,6 +67,4 @@ private[scalaz] trait MulGroupOps extends MulGroupOps0 {
   implicit class ScalazMulMonoid2Ops[F](val asScalaz: scalaz.Monoid[F @@ Multiplication]) extends ScalazMonoidOps[F]
 }
 
-object multiplicativeGroups extends MulGroupOps
-
 // vim: expandtab:ts=2:sw=2

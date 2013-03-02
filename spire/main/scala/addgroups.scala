@@ -29,6 +29,4 @@ private[scalaz] trait AddGroupOps extends AddGroupOps0 {
   }
 }
 
-object additiveGroups extends AddGroupOps
-
 // vim: expandtab:ts=2:sw=2
