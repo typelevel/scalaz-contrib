@@ -15,11 +15,11 @@ To use the latest version, include the following in your `build.sbt`:
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "scalaz-contrib-210" % "0.1.1",
-  "org.typelevel" %% "scalaz-contrib-validation" % "0.1.1",
-  "org.typelevel" %% "scalaz-contrib-undo" % "0.1.1",
-  "org.typelevel" %% "scalaz-dispatch" % "0.1.1",
-  "org.typelevel" %% "scalaz-spire" % "0.1.1"
+  "org.typelevel" %% "scalaz-contrib-210" % "0.1.2",
+  "org.typelevel" %% "scalaz-contrib-validation" % "0.1.2",
+  "org.typelevel" %% "scalaz-contrib-undo" % "0.1.2",
+  "org.typelevel" %% "scalaz-dispatch" % "0.1.2",
+  "org.typelevel" %% "scalaz-spire" % "0.1.2"
 )
 ```
 
@@ -29,7 +29,7 @@ For the in-progess features, use the following:
 resolvers += Resolver.sonatypeRepo("snapshots")
 ```
 
-and depend on version `0.2-SNAPSHOT` instead of `0.1.1`.
+and depend on version `0.2-SNAPSHOT` instead.
 
 Examples
 --------
