@@ -127,6 +127,8 @@ private[scalaz] trait UndoTMonadState[S, F[+_]]
 
   def init = UndoT[F, S, S](HMS.gets(s => s.current))
 
+  def get = init
+
   def put(s: S) = UndoT[F, S, Unit](
     HMS.bind(HMS.init) {
       case History(_, us, rs) => HMS.put(History(s, us, rs))
