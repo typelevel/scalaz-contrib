@@ -1,7 +1,13 @@
 import sbt._
 import Keys._
 
+import sbtrelease._
 import sbtrelease.ReleasePlugin._
+import sbtrelease.ReleasePlugin.ReleaseKeys._
+import sbtrelease.ReleaseStateTransformations._
+import sbtrelease.Utilities._
+
+import com.typesafe.sbt.pgp.PgpKeys._
 
 object ScalazContribBuild extends Build {
 
@@ -11,6 +17,23 @@ object ScalazContribBuild extends Build {
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
   val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1.2" % "test"
   val scalazScalacheck = "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
+
+
+  lazy val publishSignedArtifacts = ReleaseStep(
+    action = st => {
+      val extracted = st.extract
+      val ref = extracted.get(thisProjectRef)
+      extracted.runAggregated(publishSigned in Global in ref, st)
+    },
+    check = st => {
+      // getPublishTo fails if no publish repository is set up.
+      val ex = st.extract
+      val ref = ex.get(thisProjectRef)
+      Classpaths.getPublishTo(ex.get(publishTo in Global in ref))
+      st
+    },
+    enableCrossBuild = true
+  )
 
   lazy val standardSettings = Defaults.defaultSettings ++ releaseSettings ++ Seq(
     organization := "org.typelevel",
@@ -24,10 +47,9 @@ object ScalazContribBuild extends Build {
     libraryDependencies ++= Seq(
       "org.scalaz" %% "scalaz-core" % scalazVersion
     ),
-    resolvers ++= Seq(
-      Resolver.sonatypeRepo("snapshots"),
-      Resolver.sonatypeRepo("releases")
-    ),
+
+    resolvers += Resolver.sonatypeRepo("releases"),
+
     // https://github.com/sbt/sbt/issues/603
     conflictWarning ~= { cw =>
       cw.copy(filter = (id: ModuleID) => true, group = (id: ModuleID) => id.organization + ":" + id.name, level = Level.Error, failOnConflict = true)
@@ -45,6 +67,22 @@ object ScalazContribBuild extends Build {
     credentials += Credentials(
       Option(System.getProperty("build.publish.credentials")) map (new File(_)) getOrElse (Path.userHome / ".ivy2" / ".credentials")
     ),
+
+    // adapted from sbt-release defaults
+    // * does not perform `pushChanges`
+    // * performs `publish-signed` instead of `publish`
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      runTest,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      publishSignedArtifacts,
+      setNextVersion,
+      commitNextVersion
+    ),
+
     pomIncludeRepository := Function.const(false),
     pomExtra :=
       <url>http://typelevel.org/scalaz</url>
