@@ -118,7 +118,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       publishArtifact := false
     ),
-    aggregate = Seq(scala210, dispatch, lift, spire, validationExtension, undo)
+    aggregate = Seq(scala210, dispatch, lift, spire, validationExtension, undo, nscalatime)
   )
 
   lazy val scala210 = Project(
@@ -166,6 +166,19 @@ object ScalazContribBuild extends Build {
       name := "scalaz-lift",
       libraryDependencies ++= Seq(
         "net.liftweb" %% "lift-common" % "2.5-RC2",
+        scalazSpecs2,
+        scalazScalacheck
+      )
+    )
+  )
+
+  lazy val nscalatime = Project(
+    id = "nscala_time",
+    base = file("nscala-time"),
+    settings = standardSettings ++ Seq(
+      name := "scalaz-nscala-time",
+      libraryDependencies ++= Seq(
+        "com.github.nscala-time" %% "nscala-time" % "0.2.0",
         scalazSpecs2,
         scalazScalacheck
       )
