@@ -22,6 +22,7 @@ class BoxTest extends Spec {
     implicitly[Arbitrary[Option[String \/ A]]] map { _.fold(empty[A])(_.fold(Failure(_, empty, empty), full)) }
 
   checkAll(monad.laws[Box])
+  checkAll(plus.laws[Box])
   checkAll(equal.laws[Box[Int]])
 
 }

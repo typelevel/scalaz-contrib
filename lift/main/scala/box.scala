@@ -24,9 +24,10 @@ import scalaz.syntax.equal._
 import net.liftweb.common.{Box, Empty, Full, Failure}
 
 trait BoxInstances {
-  implicit def BoxMonad: Monad[Box] = new Monad[Box] {
+  implicit def BoxMonad: Monad[Box] with Plus[Box] = new Monad[Box] with Plus[Box] {
     def point[A](a: => A) = Full(a)
     def bind[A, B](box: Box[A])(f: A => Box[B]) = box flatMap f
+    def plus[A](a: Box[A], b: => Box[A]): Box[A] = a or b
   }
 
   private def FailureEqual: Equal[Failure] = new Equal[Failure] {
