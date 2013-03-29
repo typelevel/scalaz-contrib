@@ -12,6 +12,7 @@ class ScalazTest extends Spec {
   import scalaz.@@
   import scalaz.Tags.Multiplication
   import _root_.spire.algebra
+  import _root_.spire.std.int._
 
   val R = algebra.Rig[Int]
   val AddM: algebra.AdditiveMonoid[Int] = R
@@ -34,34 +35,38 @@ class ScalazTest extends Spec {
   // this should compile
   val (ma, mb) = R.asScalaz
 
-
   // test compilation for auto-conversions
+
+
   {
     import conversions.toScalaz._
-    import _root_.spire.math.UInt
+
+    trait Foo
+    // this code will *never* be executed!
+    val FooRig: algebra.Rig[Foo] = algebra.Rig[Int].asInstanceOf[algebra.Rig[Foo]]
 
     {
-      implicit val S: algebra.Rig[UInt] = algebra.Rig.UIntIsRig
+      implicit val S: algebra.Rig[Foo] = FooRig
 
-      scalaz.Monoid[UInt]
-      scalaz.Monoid[UInt @@ Multiplication]
-      scalaz.Semigroup[UInt]
-      scalaz.Semigroup[UInt @@ Multiplication]
+      scalaz.Monoid[Foo]
+      scalaz.Monoid[Foo @@ Multiplication]
+      scalaz.Semigroup[Foo]
+      scalaz.Semigroup[Foo @@ Multiplication]
     }
     {
-      implicit val S: algebra.AdditiveMonoid[UInt] = algebra.Rig.UIntIsRig
+      implicit val S: algebra.AdditiveMonoid[Foo] = FooRig
 
-      scalaz.Monoid[UInt]
-      scalaz.Semigroup[UInt]
+      scalaz.Monoid[Foo]
+      scalaz.Semigroup[Foo]
 
       // should fail:
-      //scalaz.Monoid[UInt @@ Multiplication]
+      //scalaz.Monoid[Foo @@ Multiplication]
     }
     {
-      implicit val S: algebra.MultiplicativeMonoid[UInt] = algebra.Rig.UIntIsRig
+      implicit val S: algebra.MultiplicativeMonoid[Foo] = FooRig
 
-      scalaz.Monoid[UInt @@ Multiplication]
-      scalaz.Semigroup[UInt @@ Multiplication]
+      scalaz.Monoid[Foo @@ Multiplication]
+      scalaz.Semigroup[Foo @@ Multiplication]
 
       // should fail:
       //scalaz.Monoid[Foo]

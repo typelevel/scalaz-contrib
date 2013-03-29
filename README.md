@@ -19,6 +19,7 @@ libraryDependencies ++= Seq(
   "org.typelevel" %% "scalaz-contrib-validation" % "0.1.2",
   "org.typelevel" %% "scalaz-contrib-undo" % "0.1.2",
   "org.typelevel" %% "scalaz-dispatch" % "0.1.2",
+  "org.typelevel" %% "scalaz-lift" % "0.1.2",
   "org.typelevel" %% "scalaz-spire" % "0.1.2"
 )
 ```
@@ -101,7 +102,7 @@ res0: Option[Int] = Some(4)
 This project provides bindings (instances) for the following libraries:
 
 * Dispatch Reboot 0.9.5
-* spire 0.4.0-M1
+* spire 0.4.0-M2
 * Lift 2.5-RC2
 
 There are more to come, so stay tuned!

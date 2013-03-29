@@ -13,6 +13,9 @@ class SpireTest extends Spec {
   import scalaz.std.anyVal._
   import scalaz.std.list._
   import scalaz.std.map._
+  import _root_.spire.std.int._
+  import _root_.spire.std.map._
+  import _root_.spire.std.seq._
 
   val M = scalaz.Monoid[Int]
   val MMult = scalaz.Monoid[Int @@ Multiplication]
