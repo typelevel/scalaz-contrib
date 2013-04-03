@@ -11,11 +11,11 @@ import com.typesafe.sbt.pgp.PgpKeys._
 
 object ScalazContribBuild extends Build {
 
-  val scalazVersion = "7.0.0-M9"
+  val scalazVersion = "7.0.0-RC1"
 
   val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test"
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
-  val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1.2" % "test"
+  val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1.3" % "test"
   val scalazScalacheck = "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
 
 
@@ -156,8 +156,8 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-spire",
       libraryDependencies ++= Seq(
-        "org.spire-math" %% "spire" % "0.4.0-M2",
-        "org.spire-math" %% "spire-scalacheck-binding" % "0.4.0-M2" % "test",
+        "org.spire-math" %% "spire" % "0.4.0-M3",
+        "org.spire-math" %% "spire-scalacheck-binding" % "0.4.0-M3" % "test",
         scalazSpecs2,
         scalazScalacheck
       )

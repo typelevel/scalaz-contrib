@@ -4,7 +4,7 @@ package spire
 import org.specs2.scalaz.Spec
 
 import _root_.spire.algebra
-import _root_.spire.algebra.Laws
+import _root_.spire.algebra.{GroupLaws, RingLaws}
 
 class SpireTest extends Spec {
 
@@ -20,15 +20,15 @@ class SpireTest extends Spec {
   val M = scalaz.Monoid[Int]
   val MMult = scalaz.Monoid[Int @@ Multiplication]
 
-  checkAll("Int", Laws[Int].monoid(M.asSpire))
-  checkAll("Int @@ Multiplication", Laws[Int].multiplicativeMonoid(MMult.asSpire))
-  checkAll("Int Additive", Laws[Int].additiveMonoid(M.asSpireAdditive))
-  checkAll("Int Multiplicative", Laws[Int].multiplicativeMonoid(M.asSpireMultiplicative))
-  checkAll("(Int, Int @@ Multiplication)", Laws[Int].rig((M, MMult).asSpire))
+  checkAll("Int", GroupLaws[Int].monoid(M.asSpire))
+  checkAll("Int @@ Multiplication", RingLaws[Int].multiplicativeMonoid(MMult.asSpire))
+  checkAll("Int Additive", GroupLaws[Int].additiveMonoid(M.asSpireAdditive))
+  checkAll("Int Multiplicative", RingLaws[Int].multiplicativeMonoid(M.asSpireMultiplicative))
+  checkAll("(Int, Int @@ Multiplication)", RingLaws[Int].rig((M, MMult).asSpire))
 
   // some more instances
-  checkAll("Map[String, Int]", Laws[Map[String, Int]].monoid(scalaz.Monoid[Map[String, Int]].asSpire))
-  checkAll("List[Int]", Laws[List[Int]].monoid(scalaz.Monoid[List[Int]].asSpire))
+  checkAll("Map[String, Int]", GroupLaws[Map[String, Int]].monoid(scalaz.Monoid[Map[String, Int]].asSpire))
+  checkAll("List[Int]", GroupLaws[List[Int]].monoid(scalaz.Monoid[List[Int]].asSpire))
 
   // test compilation for auto-conversions
   {

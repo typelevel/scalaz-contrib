@@ -3,7 +3,7 @@ package scalaz.contrib
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary._
 
-import org.specs2.scalaz.Spec
+import org.specs2.scalaz.{ScalazMatchers, Spec}
 
 import scalaz._
 import scalaz.syntax.functor._
@@ -26,8 +26,10 @@ class TryTest extends Spec {
   checkAll(plus.laws[Try])
   checkAll(equal.laws[Try[Int]])
 
+  // TODO kludge
+  object matchers extends ScalazMatchers
   "IsoFunctor is identity" ! prop { (t: Try[Int]) =>
-    t must be_===(tryIsoFunctor.from[Int](tryIsoFunctor.to[Int](t)))
+    t must matchers.equal(tryIsoFunctor.from[Int](tryIsoFunctor.to[Int](t)))
   }
 
 }
