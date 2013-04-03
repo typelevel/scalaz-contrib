@@ -94,9 +94,9 @@ object ScalazContribBuild extends Build {
           </license>
         </licenses>
         <scm>
-            <url>https://github.com/larsrh/scalaz-contrib</url>
-            <connection>scm:git:git://github.com/larsrh/scalaz-contrib.git</connection>
-            <developerConnection>scm:git:git@github.com:larsrh/scalaz-contrib.git</developerConnection>
+            <url>https://github.com/typelevel/scalaz-contrib</url>
+            <connection>scm:git:git://github.com/typelevel/scalaz-contrib.git</connection>
+            <developerConnection>scm:git:git@github.com:typelevel/scalaz-contrib.git</developerConnection>
         </scm>
         <developers>
           <developer>
@@ -108,6 +108,11 @@ object ScalazContribBuild extends Build {
             <id>OleTraveler</id>
             <name>Travis Stevens</name>
             <url>https://github.com/OleTraveler</url>
+          </developer>
+          <developer>
+            <id>folone</id>
+            <name>George Leontiev</name>
+            <url>https://github.com/folone</url>
           </developer>
         </developers>
   )
