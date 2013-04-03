@@ -15,12 +15,13 @@ To use the latest version, include the following in your `build.sbt`:
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "scalaz-contrib-210" % "0.1.2",
-  "org.typelevel" %% "scalaz-contrib-validation" % "0.1.2",
-  "org.typelevel" %% "scalaz-contrib-undo" % "0.1.2",
-  "org.typelevel" %% "scalaz-dispatch" % "0.1.2",
-  "org.typelevel" %% "scalaz-lift" % "0.1.2",
-  "org.typelevel" %% "scalaz-spire" % "0.1.2"
+  "org.typelevel" %% "scalaz-contrib-210" % "0.1.3",
+  "org.typelevel" %% "scalaz-contrib-validation" % "0.1.3",
+  "org.typelevel" %% "scalaz-contrib-undo" % "0.1.3",
+  "org.typelevel" %% "scalaz-dispatch" % "0.1.3",
+  "org.typelevel" %% "scalaz-lift" % "0.1.3",
+  "org.typelevel" %% "scalaz-nscala-time" % "0.1.3",
+  "org.typelevel" %% "scalaz-spire" % "0.1.3"
 )
 ```
 
