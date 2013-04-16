@@ -6,9 +6,8 @@ import scalaz.contrib.NScalaTimeArbitrary._
 import org.joda.time._
 import scalaz.contrib.nscala_time._
 
-class DurationTest extends Spec {
+class IntervalTest extends Spec {
 
-  checkAll(monoid.laws[Duration])
-  checkAll(order.laws[Duration])
+  checkAll(equal.laws[Interval])
 
 }

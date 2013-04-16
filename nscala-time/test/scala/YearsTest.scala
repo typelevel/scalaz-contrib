@@ -6,9 +6,9 @@ import scalaz.contrib.NScalaTimeArbitrary._
 import org.joda.time._
 import scalaz.contrib.nscala_time._
 
-class DurationTest extends Spec {
+class YearsTest extends Spec {
 
-  checkAll(monoid.laws[Duration])
-  checkAll(order.laws[Duration])
+  checkAll(monoid.laws[Years])
+  checkAll(order.laws[Years])
 
 }
