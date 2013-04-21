@@ -11,11 +11,11 @@ import com.typesafe.sbt.pgp.PgpKeys._
 
 object ScalazContribBuild extends Build {
 
-  val scalazVersion = "7.0.0-RC1"
+  val scalazVersion = "7.0.0"
 
   val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test"
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
-  val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1.3" % "test"
+  val scalazSpecs2 = "org.typelevel" %% "scalaz-specs2" % "0.1.4" % "test"
   val scalazScalacheck = "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion % "test"
 
 
@@ -38,7 +38,10 @@ object ScalazContribBuild extends Build {
   lazy val standardSettings = Defaults.defaultSettings ++ releaseSettings ++ Seq(
     organization := "org.typelevel",
 
-    scalaVersion := "2.10.0",
+    licenses := Seq("MIT" → url("http://www.opensource.org/licenses/mit-license.php")),
+    homepage := Some(url("http://typelevel.org/")),
+
+    scalaVersion := "2.10.1",
     scalacOptions ++= Seq(
       "-unchecked", "-deprecation",
       "-feature", "-language:implicitConversions", "-language:higherKinds"
@@ -84,37 +87,29 @@ object ScalazContribBuild extends Build {
     ),
 
     pomIncludeRepository := Function.const(false),
-    pomExtra :=
-      <url>http://typelevel.org/scalaz</url>
-        <licenses>
-          <license>
-            <name>MIT</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-            <distribution>repo</distribution>
-          </license>
-        </licenses>
-        <scm>
-            <url>https://github.com/typelevel/scalaz-contrib</url>
-            <connection>scm:git:git://github.com/typelevel/scalaz-contrib.git</connection>
-            <developerConnection>scm:git:git@github.com:typelevel/scalaz-contrib.git</developerConnection>
-        </scm>
-        <developers>
-          <developer>
-            <id>larsrh</id>
-            <name>Lars Hupel</name>
-            <url>https://github.com/larsrh</url>
-          </developer>
-          <developer>
-            <id>OleTraveler</id>
-            <name>Travis Stevens</name>
-            <url>https://github.com/OleTraveler</url>
-          </developer>
-          <developer>
-            <id>folone</id>
-            <name>George Leontiev</name>
-            <url>https://github.com/folone</url>
-          </developer>
-        </developers>
+    pomExtra := (
+      <scm>
+          <url>https://github.com/typelevel/scalaz-contrib</url>
+          <connection>scm:git:git://github.com/typelevel/scalaz-contrib.git</connection>
+      </scm>
+      <developers>
+        <developer>
+          <id>larsrh</id>
+          <name>Lars Hupel</name>
+          <url>https://github.com/larsrh</url>
+        </developer>
+        <developer>
+          <id>OleTraveler</id>
+          <name>Travis Stevens</name>
+          <url>https://github.com/OleTraveler</url>
+        </developer>
+        <developer>
+          <id>folone</id>
+          <name>George Leontiev</name>
+          <url>https://github.com/folone</url>
+        </developer>
+      </developers>
+    )
   )
 
   lazy val scalazContrib = Project(
