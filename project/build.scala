@@ -11,7 +11,7 @@ import com.typesafe.sbt.pgp.PgpKeys._
 
 object ScalazContribBuild extends Build {
 
-  val scalazVersion = "7.0.0"
+  val scalazVersion = "7.0.2"
 
   val specs2 = "org.specs2" %% "specs2" % "1.12.3" % "test"
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.10.0" % "test"
@@ -41,7 +41,7 @@ object ScalazContribBuild extends Build {
     licenses := Seq("MIT" → url("http://www.opensource.org/licenses/mit-license.php")),
     homepage := Some(url("http://typelevel.org/")),
 
-    scalaVersion := "2.10.1",
+    scalaVersion := "2.10.2",
     scalacOptions ++= Seq(
       "-unchecked", "-deprecation",
       "-feature", "-language:implicitConversions", "-language:higherKinds"
@@ -55,7 +55,7 @@ object ScalazContribBuild extends Build {
 
     // https://github.com/sbt/sbt/issues/603
     conflictWarning ~= { cw =>
-      cw.copy(filter = (id: ModuleID) => id.organization != "org.scala-lang", group = (id: ModuleID) => id.organization + ":" + id.name, level = Level.Error, failOnConflict = true)
+      cw.copy(filter = (id: ModuleID) => id.organization != "org.scala-lang", group = (id: ModuleID) => id.organization + ":" + id.name)
     },
 
     sourceDirectory <<= baseDirectory(identity),
@@ -151,8 +151,8 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-spire",
       libraryDependencies ++= Seq(
-        "org.spire-math" %% "spire" % "0.4.0-M3",
-        "org.spire-math" %% "spire-scalacheck-binding" % "0.4.0-M3" % "test",
+        "org.spire-math" %% "spire" % "0.5.1",
+        "org.spire-math" %% "spire-scalacheck-binding" % "0.5.1" % "test",
         scalazSpecs2,
         scalazScalacheck
       )
@@ -165,7 +165,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-lift",
       libraryDependencies ++= Seq(
-        "net.liftweb" %% "lift-common" % "2.5-RC2",
+        "net.liftweb" %% "lift-common" % "2.5.1",
         scalazSpecs2,
         scalazScalacheck
       )
@@ -178,7 +178,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-nscala-time",
       libraryDependencies ++= Seq(
-        "com.github.nscala-time" %% "nscala-time" % "0.2.0",
+        "com.github.nscala-time" %% "nscala-time" % "0.4.2",
         scalazSpecs2,
         scalazScalacheck
       )
