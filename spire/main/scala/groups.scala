@@ -5,11 +5,6 @@ import _root_.spire.algebra
 
 object Groups {
 
-  trait Ops[F, +SP[_], +SZ[_]] {
-    def asSpire: SP[F]
-    def asScalaz: SZ[F]
-  }
-
   // Semigroups
 
   trait SemigroupOps[F] extends Ops[F, algebra.Semigroup, scalaz.Semigroup] {

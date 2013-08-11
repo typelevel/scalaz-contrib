@@ -10,14 +10,12 @@ private[scalaz] trait ToSpireConversions0 {
   implicit def scalazSemigroup2Spire[F](implicit m: scalaz.Semigroup[F]): algebra.Semigroup[F] = m.asSpire
   implicit def scalazAddSemigroup2Spire[F](implicit m: scalaz.Semigroup[F]): algebra.AdditiveSemigroup[F] = m.asSpireAdditive
   implicit def scalazMulSemigroup2Spire[F](implicit m: scalaz.Semigroup[F @@ Multiplication]): algebra.MultiplicativeSemigroup[F] = m.asSpire
-  implicit def scalazSemiring2Spire[F](implicit a: scalaz.Semigroup[F], m: scalaz.Semigroup[F @@ Multiplication]): algebra.Semiring[F] = (a, m).asSpire
 }
 
 private[scalaz] trait ToSpireConversions extends ToSpireConversions0 {
   implicit def scalazMonoid2Spire[F](implicit m: scalaz.Monoid[F]): algebra.Monoid[F] = m.asSpire
   implicit def scalazAddMonoid2Spire[F](implicit m: scalaz.Monoid[F]): algebra.AdditiveMonoid[F] = m.asSpireAdditive
   implicit def scalazMulMonoid2Spire[F](implicit m: scalaz.Monoid[F @@ Multiplication]): algebra.MultiplicativeMonoid[F] = m.asSpire
-  implicit def scalazRig2Spire[F](implicit a: scalaz.Monoid[F], m: scalaz.Monoid[F @@ Multiplication]): algebra.Rig[F] = (a, m).asSpire
 }
 
 private[scalaz] trait ToScalazConversions2 {
