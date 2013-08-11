@@ -118,7 +118,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       publishArtifact := false
     ),
-    aggregate = Seq(scala210, dispatch, lift, spire, validationExtension, undo, nscalatime)
+    aggregate = Seq(scala210, lift, spire, validationExtension, undo, nscalatime)
   )
 
   lazy val scala210 = Project(
@@ -132,16 +132,6 @@ object ScalazContribBuild extends Build {
         scalacheck,
         scalazScalacheck
       )
-    )
-  )
-
-  lazy val dispatch = Project(
-    id = "dispatch",
-    base = file("dispatch"),
-    settings = standardSettings ++ Seq(
-      name := "scalaz-dispatch",
-      libraryDependencies +=
-        "net.databinder.dispatch" %% "dispatch-core" % "0.9.5"
     )
   )
 
