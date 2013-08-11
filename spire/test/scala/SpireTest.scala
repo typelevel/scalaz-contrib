@@ -30,6 +30,16 @@ class SpireTest extends Spec {
   checkAll("Map[String, Int]", GroupLaws[Map[String, Int]].monoid(scalaz.Monoid[Map[String, Int]].asSpire))
   checkAll("List[Int]", GroupLaws[List[Int]].monoid(scalaz.Monoid[List[Int]].asSpire))
 
+  "Order conversion" ! prop { (xs: List[Int]) =>
+    case class Blurb(x: Int)
+    val blurbs = xs map Blurb.apply
+
+    implicit val spireOrder: algebra.Order[Blurb] = algebra.Order.by(_.x)
+    implicit val scalazOrder: scalaz.Order[Blurb] = scalaz.Order.orderBy(_.x)
+
+    blurbs.sorted(spireOrder.asScalaz.toScalaOrdering) == blurbs.sorted(algebra.Order ordering scalazOrder.asSpire)
+  }
+
   // test compilation for auto-conversions
   {
     import conversions.toSpire._
@@ -46,6 +56,11 @@ class SpireTest extends Spec {
 
       // should fail:
       //implicitly[algebra.MultiplicativeMonoid[Foo]]
+
+      implicit val O: scalaz.Order[Foo] = null
+
+      implicitly[algebra.Order[Foo]]
+      implicitly[algebra.Eq[Foo]]
     }
     {
       implicit val S: scalaz.Monoid[Foo @@ Multiplication] = null
