@@ -102,10 +102,9 @@ res0: Option[Int] = Some(4)
 
 This project provides bindings (instances) for the following libraries:
 
-* Dispatch Reboot 0.9.5
-* spire 0.4.0-M3
-* Lift 2.5-RC2
-* nscala_time 0.2.0
+* spire 0.5.1
+* Lift 2.5.1
+* nscala_time 0.4.2
 
 There are more to come, so stay tuned!
 
@@ -124,6 +123,7 @@ To understand which conversions "make sense", consider the kinds of type classes
 
 * Scalaz provides only one-operator classes, namely `Semigroup` and `Monoid`. To make a distinction between additive and multiplicative operations, scalaz uses _tags_. Hence, a `Semigroup[A]` denotes an unspecified operation, and `Semigroup[A @@ Multiplication]` a multiplicative operation.
 * Spire provides one- and two-operator classes. The one-operator classes come in three flavours, e.g. `Semigroup`, `AdditiveSemigroup` and `MultiplicativeSemigroup` (same for `Monoid`, ...). As in scalaz, a plain `Semigroup` conveys nothing about the type of operation, whereas the other two should be used for additive and multiplicative operations, respectively. Spire's two-operator classes inherit from the additive and multiplicative variants, e.g. `Semiring` extends `AdditiveSemigroup` and `MultiplicativeSemigroup`. Also, these classes should guarantee that these two distinct operations relate to each other.
+* Both scalaz and spire provide some notion of equality and ordering.
 
 Thus, in *manual* mode, the following conversions are available:
 
@@ -134,12 +134,19 @@ Thus, in *manual* mode, the following conversions are available:
   S.asSpireMultiplicative // ... → MultiplicativeSemigroup
 
   SMult.asSpire // Semigroup @@ Multiplication → MultiplicativeSemigroup
+
+  E.asSpire // Equal → Eq
+  O.asSpire // Order → Order
   ```
 * from spire one-operator to scalaz one-operator:
   ```scala
   // Semigroup and AdditiveSemigroup → Semigroup
   // MultiplicativeSemigroup → Semigroup @@ Multiplication
   S.asScalaz
+
+  // Eq → Equal
+  // Order → Order
+  O.asScalaz
   ```
 
 These operations are also available in *automatic* mode, without the need to call `asXY`.
