@@ -48,7 +48,8 @@ object ScalazContribBuild extends Build {
     ),
 
     libraryDependencies ++= Seq(
-      "org.scalaz" %% "scalaz-core" % scalazVersion
+      "org.scalaz" %% "scalaz-core" % scalazVersion,
+      "org.scalaz" %% "scalaz-effect" % scalazVersion
     ),
 
     resolvers += Resolver.sonatypeRepo("releases"),
