@@ -2,13 +2,19 @@ package scalaz.contrib
 package std
 
 import scalaz._
+import scalaz.effect.IO
 
 import scala.concurrent.{Future, ExecutionContext, CanAwait, Await}
 import scala.concurrent.duration.Duration
 
+trait FutureFunctions {
+  def forkIO[A](a: IO[A])(implicit ec: ExecutionContext): IO[Future[A]] =
+    IO(Future(a.unsafePerformIO))
+}
+
 trait FutureInstances1 {
 
-  implicit def futureInstance(implicit ec: ExecutionContext): Monad[Future] with Cobind[Future] with Cojoin[Future] with Each[Future] = 
+  implicit def futureInstance(implicit ec: ExecutionContext): Monad[Future] with Cobind[Future] with Cojoin[Future] with Each[Future] =
     new FutureInstance
 
   implicit def futureSemigroup[A](implicit m: Semigroup[A], ec: ExecutionContext): Semigroup[Future[A]] =
@@ -48,6 +54,6 @@ private class FutureInstance(implicit ec: ExecutionContext) extends Monad[Future
 
 }
 
-object scalaFuture extends FutureInstances
+object scalaFuture extends FutureFunctions with FutureInstances
 
 // vim: expandtab:ts=2:sw=2
