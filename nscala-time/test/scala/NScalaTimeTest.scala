@@ -11,7 +11,7 @@ class NScalaTimeTest extends Spec {
 
   import NScalaTimeArbitrary._
 
-  checkAll("DateTime", order.laws[DateTime])
+  checkAll("DateTime", enum.laws[DateTime])
 
   checkAll("Days", monoid.laws[Days])
   checkAll("Days", order.laws[Days])
@@ -26,9 +26,9 @@ class NScalaTimeTest extends Spec {
   
   checkAll("Interval", equal.laws[Interval])
 
-  checkAll("LocalDate", order.laws[LocalDate])
+  checkAll("LocalDate", enum.laws[LocalDate])
 
-  checkAll("LocalDateTime", order.laws[LocalDateTime])
+  checkAll("LocalDateTime", enum.laws[LocalDateTime])
   
   checkAll("LocalTime", order.laws[LocalTime])
 

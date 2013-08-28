@@ -2,11 +2,11 @@ package scalaz.contrib
 package nscala_time
 
 import scalaz._
+import scalaz.syntax.enum._
 
 import org.joda.time._
 
 trait Instances {
-
   private def orderFromInt[A](f: (A, A) => Int): Order[A] = new Order[A] {
     def order(x: A, y: A) = Ordering.fromInt(f(x, y))
   }
@@ -70,11 +70,28 @@ trait Instances {
   implicit val yearMonthInstance     = orderFromInt[YearMonth](_ compareTo _)
   implicit val monthDayInstance      = orderFromInt[MonthDay](_ compareTo _)
   implicit val instantInstance       = orderFromInt[Instant](_ compareTo _)
-  implicit val dateTimeInstance      = orderFromInt[DateTime](_ compareTo _)
   implicit val localTimeInstance     = orderFromInt[LocalTime](_ compareTo _)
-  implicit val localDateInstance     = orderFromInt[LocalDate](_ compareTo _)
-  implicit val localDateTimeInstance = orderFromInt[LocalDateTime](_ compareTo _)
 
+  implicit val dateTimeInstance = new Enum[DateTime] {
+    override def order(x: DateTime, y: DateTime): Ordering =
+      Ordering.fromInt(x compareTo y)
+    override def pred(a: DateTime): DateTime = a.minusDays(1)
+    override def succ(a: DateTime): DateTime = a.plusDays(1)
+  }
+
+  implicit val localDateInstance = new Enum[LocalDate] {
+    override def order(x: LocalDate, y: LocalDate): Ordering =
+      Ordering.fromInt(x compareTo y)
+    override def pred(a: LocalDate): LocalDate = a.minusDays(1)
+    override def succ(a: LocalDate): LocalDate = a.plusDays(1)
+  }
+
+  implicit val localDateTimeInstance = new Enum[LocalDateTime] {
+    override def order(x: LocalDateTime, y: LocalDateTime): Ordering =
+      Ordering.fromInt(x compareTo y)
+    override def pred(a: LocalDateTime): LocalDateTime = a.minusDays(1)
+    override def succ(a: LocalDateTime): LocalDateTime = a.plusDays(1)
+  }
 }
 
 // vim: expandtab:ts=2:sw=2
