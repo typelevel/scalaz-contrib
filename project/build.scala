@@ -169,7 +169,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-nscala-time",
       libraryDependencies ++= Seq(
-        "com.github.nscala-time" %% "nscala-time" % "0.4.2",
+        "com.github.nscala-time" %% "nscala-time" % "0.6.0",
         scalazSpecs2,
         scalazScalacheck
       )
