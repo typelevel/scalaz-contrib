@@ -2,7 +2,7 @@ package scalaz.contrib
 
 import org.specs2.mutable.Specification
 import scalaz.contrib.validator.string._
-import scalaz.{Failure, NonEmptyList}
+import scalaz.{Success, Failure, NonEmptyList}
 
 class CheckerSpec extends Specification {
 
@@ -19,6 +19,12 @@ class CheckerSpec extends Specification {
     "execute no more validators when it's already failed" in {
       c.checkThat(strLength(100, "not 100"))
         .checkThen(strLength(99, "not 99")).toValidation mustEqual Failure(NonEmptyList("not 100"))
+    }
+
+    "successful validation" in {
+      c.checkThat(strLength(6, "not 6"))
+        .checkThen(minStrLength(1, "min 1"))
+        .checkThen(maxStrLength(6, "max 7")).toValidation mustEqual Success("MyTest")
     }
   }
 }
