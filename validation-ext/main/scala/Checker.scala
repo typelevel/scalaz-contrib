@@ -22,6 +22,12 @@ sealed trait Checker[+F, T] {
 
   def checkThat[F1 >: F](vs: Validator[F1, T]*): Checker[F1, T]
 
+  /**
+   * Executes the validators only if there are not already errors. This useful to get a fail-fast behaviour
+   * so that following validators doesn't get executed if a preceding one is already failed.
+   */
+  def checkThen[F1 >: F](vs: Validator[F1, T]*): Checker[F1, T]
+
   def convertTo[F1 >: F, U](conv: Converter[F1, T, U]): Checker[F1, U]
 
   def andAlso[F1 >: F, U](c: Checker[F1, U]): Checker[F1, (T, U)]
@@ -44,6 +50,12 @@ private[scalaz] case class YesChecker[+F, T](value: T, failures: Vector[F]) exte
 
   def checkThat[F1 >: F](vs: Validator[F1, T]*) =
     YesChecker(value, failures ++ validatorsToSeq(value, vs))
+
+  def checkThen[F1 >: F](vs: Validator[F1, T]*): Checker[F1, T] =
+    failures match {
+      case f +: fs => NoChecker(NonEmptyList(f, fs: _*))
+      case _ => checkThat[F1](vs:_*)
+    }
 
   def convertTo[F1 >: F, U](conv: Converter[F1, T, U]) =
     failures match {
@@ -71,6 +83,9 @@ private[scalaz] case class YesChecker[+F, T](value: T, failures: Vector[F]) exte
 private[scalaz] case class NoChecker[+F, T](failures: NonEmptyList[F]) extends Checker[F, T] {
 
   def checkThat[F1 >: F](vs: Validator[F1, T]*) =
+    this
+
+  def checkThen[F1 >: F](vs: Validator[F1, T]*): Checker[F1, T] =
     this
 
   def convertTo[F1 >: F, U](conv: Converter[F1, T, U]) =
