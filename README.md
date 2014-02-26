@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
 )
 ```
 
-For the in-progess features, use the following:
+For the in-progress features, use the following:
 
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
