@@ -142,8 +142,8 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-spire",
       libraryDependencies ++= Seq(
-        "org.spire-math" %% "spire" % "0.5.1",
-        "org.spire-math" %% "spire-scalacheck-binding" % "0.5.1" % "test",
+        "org.spire-math" %% "spire" % "0.7.3",
+        "org.spire-math" %% "spire-scalacheck-binding" % "0.7.3" % "test",
         scalazSpecs2,
         scalazScalacheck
       )
