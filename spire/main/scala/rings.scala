@@ -21,11 +21,11 @@ object Rings {
 
   // Semirings
 
-  trait SemiringOps[F] extends Ops[F, algebra.Semiring, scalaz.Semigroup, scalaz.Semigroup]
+  trait SemiringOps[F] extends Ops[F, algebra.Semiring, scalaz.Monoid, scalaz.Semigroup]
 
   trait SpireSemiringOps[F] extends SemiringOps[F] {
     // I'm not sure why this type annotation is necessary
-    override def asScalaz: (scalaz.Semigroup[F], scalaz.Semigroup[F @@ Multiplication]) = (
+    override def asScalaz: (scalaz.Monoid[F], scalaz.Semigroup[F @@ Multiplication]) = (
       asSpire.additive.asScalaz,
       SpireMulSemigroup2Ops(asSpire).asScalaz
     )
@@ -37,6 +37,7 @@ object Rings {
     trait SpireSemiring extends algebra.Semiring[F] {
       def times(x: F, y: F) = mulAsScalaz.append(Multiplication(x), Multiplication(y))
       def plus(x: F, y: F) = addAsScalaz.append(x, y)
+      def zero = addAsScalaz.zero
     }
   }
 
@@ -56,7 +57,6 @@ object Rings {
 
     trait SpireRig extends algebra.Rig[F] with SpireSemiring {
       def one = mulAsScalaz.zero
-      def zero = addAsScalaz.zero
     }
   }
 
@@ -65,7 +65,7 @@ object Rings {
 private[scalaz] trait RingOps0 {
   import Rings._
   implicit class SpireSemiring2Ops[F](val asSpire: algebra.Semiring[F]) extends SpireSemiringOps[F]
-  implicit class ScalazSemiring2Ops[F](val asScalaz: (scalaz.Semigroup[F], scalaz.Semigroup[F @@ Multiplication])) extends ScalazSemiringOps[F]
+  implicit class ScalazSemiring2Ops[F](val asScalaz: (scalaz.Monoid[F], scalaz.Semigroup[F @@ Multiplication])) extends ScalazSemiringOps[F]
 }
 
 private[scalaz] trait RingOps extends RingOps0 {

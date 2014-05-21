@@ -46,7 +46,7 @@ class StringConvertersSpec extends Specification with ValidationMatchers {
     val toUUID = uuid(errorMessage)
 
     "succeed when string is a UUID" in {
-      List.fill(100)(UUID.randomUUID) foreach { u => toUUID(u.toString) must beSuccessful(u) }
+      forall(List.fill(100)(UUID.randomUUID)) { u => toUUID(u.toString) must beSuccessful(u) }
     }
 
     "fail when string is not a uuid" in {

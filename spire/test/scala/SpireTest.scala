@@ -4,9 +4,16 @@ package spire
 import org.specs2.scalaz.Spec
 
 import _root_.spire.algebra
-import _root_.spire.algebra.{GroupLaws, RingLaws}
+import _root_.spire.laws._
 
-class SpireTest extends Spec {
+import org.typelevel.discipline.scalatest.Discipline
+
+import org.scalacheck.Prop
+
+import org.scalatest.FunSuite
+import org.scalatest.prop.Checkers
+
+class SpireTest extends FunSuite with Discipline with Checkers {
 
   import scalaz.@@
   import scalaz.Tags.Multiplication
@@ -30,14 +37,16 @@ class SpireTest extends Spec {
   checkAll("Map[String, Int]", GroupLaws[Map[String, Int]].monoid(scalaz.Monoid[Map[String, Int]].asSpire))
   checkAll("List[Int]", GroupLaws[List[Int]].monoid(scalaz.Monoid[List[Int]].asSpire))
 
-  "Order conversion" ! prop { (xs: List[Int]) =>
+  test("Order conversion") {
     case class Blurb(x: Int)
-    val blurbs = xs map Blurb.apply
 
     implicit val spireOrder: algebra.Order[Blurb] = algebra.Order.by(_.x)
     implicit val scalazOrder: scalaz.Order[Blurb] = scalaz.Order.orderBy(_.x)
 
-    blurbs.sorted(spireOrder.asScalaz.toScalaOrdering) == blurbs.sorted(algebra.Order ordering scalazOrder.asSpire)
+    check(Prop.forAll { (xs: List[Int]) =>
+      val blurbs = xs map Blurb.apply
+      blurbs.sorted(spireOrder.asScalaz.toScalaOrdering) == blurbs.sorted(algebra.Order ordering scalazOrder.asSpire)
+    })
   }
 
   // test compilation for auto-conversions

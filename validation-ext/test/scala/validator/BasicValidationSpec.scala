@@ -15,23 +15,23 @@ class BasicValidationSpec extends Specification {
   val errorMessage = "Generic Error Message"
 
   "atMost validator" should {
-    val atMost10 = atMost(10, errorMessage)
+    val atMost10 = basic.atMost(10, errorMessage)
 
     "work for Int with implicit Ordering" in {
-      1 to 10   foreach { x => atMost10(x) must beNone }
-      11 to 100 foreach { x => atMost10(x) must beSome(errorMessage) }
+      forall(1 to 10)   { x => atMost10(x) must beNone }
+      forall(11 to 100) { x => atMost10(x) must beSome(errorMessage) }
     }
   }
 
   "atLeast validator" should {
-    val atLeast10 = atLeast(10, errorMessage)
+    val atLeast10 = basic.atLeast(10, errorMessage)
 
     "pass for values greater than or equal to min" in {
-      (10 to 100).map(x => atLeast10(x) must beNone)
+      forall(10 to 100) { x => atLeast10(x) must beNone }
     }
     
     "fail for values less than min" in {
-      (-110 to 9).map(x => atLeast10(x) must beSome(errorMessage))
+      forall(-110 to 9) { x => atLeast10(x) must beSome(errorMessage) }
     }
   }
 
@@ -41,11 +41,11 @@ class BasicValidationSpec extends Specification {
     }
 
     "fail for values less than the value" in {
-      (0 to 4).map(x => f(x) must beSome(errorMessage))
+      forall(0 to 4) { x => f(x) must beSome(errorMessage) }
     }
 
     "fail for values more than the value" in {
-      (6 to 100).map(x => f(x) must beSome(errorMessage))
+      forall(6 to 100) { x => f(x) must beSome(errorMessage) }
     }
   }
 
@@ -61,15 +61,15 @@ class BasicValidationSpec extends Specification {
     val range5to10 = range(5,10, errorMessage)
 
     "fail if less than range" in {
-      (0 to 4).map(range5to10(_) must beSome(errorMessage))
+      forall(0 to 4) { n => range5to10(n) must beSome(errorMessage) }
     }
 
     "pass if in range" in {
-      (5 to 10).map(n => range5to10(n) must beNone)
+      forall(5 to 10) { n => range5to10(n) must beNone }
     }
 
     "fail if greater than range" in {
-      (11 to 100).map(range5to10(_) must beSome(errorMessage))
+      forall(11 to 100) { n => range5to10(n) must beSome(errorMessage) }
     }
   }
 
