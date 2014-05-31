@@ -9,18 +9,19 @@ Interoperability libraries &amp; additional data structures and instances for Sc
 Usage
 -----
 
-This library is currently available for Scala 2.10 only.
+This library is currently available for Scala 2.11 only. For 2.10 builds, use version `0.1.5`.
 
 To use the latest version, include the following in your `build.sbt`:
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "scalaz-contrib-210"        % "0.1.5",
-  "org.typelevel" %% "scalaz-contrib-validation" % "0.1.5",
-  "org.typelevel" %% "scalaz-contrib-undo"       % "0.1.5",
-  "org.typelevel" %% "scalaz-lift"               % "0.1.5",
-  "org.typelevel" %% "scalaz-nscala-time"        % "0.1.5",
-  "org.typelevel" %% "scalaz-spire"              % "0.1.5"
+  "org.typelevel" %% "scalaz-contrib-210"        % "0.2",
+  "org.typelevel" %% "scalaz-contrib-validation" % "0.2",
+  "org.typelevel" %% "scalaz-contrib-undo"       % "0.2",
+  // currently unavailable because there's no 2.11 build of Lift yet
+  // "org.typelevel" %% "scalaz-lift"               % "0.2",
+  "org.typelevel" %% "scalaz-nscala-time"        % "0.2",
+  "org.typelevel" %% "scalaz-spire"              % "0.2"
 )
 ```
 
@@ -30,12 +31,12 @@ For the in-progress features, use the following:
 resolvers += Resolver.sonatypeRepo("snapshots")
 ```
 
-and depend on version `0.2-SNAPSHOT` instead.
+and depend on version `0.3-SNAPSHOT` instead.
 
 Examples
 --------
 
-### Scala 2.10
+### Scala 2.10+
 
 You can now use type class instances for new data types in the standard library:
 
@@ -49,6 +50,8 @@ import scalaz.contrib.std.utilTry._
 scala> Monad[scala.util.Try]
 res1: scalaz.Monad[scala.util.Try] = scalaz.contrib.std.TryInstances1$$anon$1@19ae3dd5
 ```
+
+The instance for Scala's `Future` is in scalaz proper. `Try` remains here.
 
 ### Validation DSL
 
@@ -101,11 +104,8 @@ res0: Option[Int] = Some(4)
 
 This project provides bindings (instances) for the following libraries:
 
-* spire 0.5.1
-* Lift 2.5.1
-* nscala_time 0.4.2
-
-There are more to come, so stay tuned!
+* spire 0.7.4
+* nscala_time 1.0.0
 
 #### spire
 
