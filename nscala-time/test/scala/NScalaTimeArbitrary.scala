@@ -25,16 +25,16 @@ object NScalaTimeArbitrary {
     smallIntArb map { Period.millis(_) }
 
   implicit val DateTimeArbitrary: Arbitrary[DateTime] =
-    arb[Long] map { new DateTime(_) }
+    arb[Int] map { new DateTime(_) }
 
   implicit val LocalDateArbitrary: Arbitrary[LocalDate] =
-    arb[Long] map { new LocalDate(_) }
+    arb[Int] map { new LocalDate(_) }
 
   implicit val LocalTimeArbitrary: Arbitrary[LocalTime] =
-    arb[Long] map { new LocalTime(_) }
+    arb[Int] map { new LocalTime(_) }
 
   implicit val LocalDateTimeArbitrary: Arbitrary[LocalDateTime] =
-    arb[Long] map { new LocalDateTime(_) }
+    arb[Int] map { new LocalDateTime(_) }
 
   implicit val DaysArbitrary: Arbitrary[Days] =
     smallIntArb map Days.days
@@ -61,10 +61,10 @@ object NScalaTimeArbitrary {
     arb[Long] map { new Instant(_) }
 
   implicit val YearMonthArbitrary: Arbitrary[YearMonth] =
-    arb[Long] map { new YearMonth(_) }
+    arb[Int] map { new YearMonth(_) }
 
   implicit val MonthDayArbitrary: Arbitrary[MonthDay] =
-    arb[Long] map { new MonthDay(_) }
+    arb[Int] map { new MonthDay(_) }
 
   implicit val IntervalArbitrary: Arbitrary[Interval] =
     Apply[Arbitrary].apply2(arb[Int], arb[Int])((a, b) =>
