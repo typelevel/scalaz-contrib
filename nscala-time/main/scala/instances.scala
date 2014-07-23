@@ -65,7 +65,10 @@ trait Instances {
     val zero = Seconds.ZERO
   }
 
-  implicit val intervalInstance = Equal.equalA[Interval]
+  implicit val intervalInstance = new Semigroup[Interval] with Equal[Interval] {
+    def append(x: Interval, y: => Interval) = Option(x overlap y) getOrElse new Interval(0, 0)
+    def equal(x: Interval, y: Interval) = x == y
+  }
 
   implicit val yearMonthInstance     = orderFromInt[YearMonth](_ compareTo _)
   implicit val monthDayInstance      = orderFromInt[MonthDay](_ compareTo _)
