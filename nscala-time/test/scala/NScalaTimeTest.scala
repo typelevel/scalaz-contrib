@@ -24,6 +24,7 @@ class NScalaTimeTest extends Spec {
   
   checkAll("Instant", order.laws[Instant])
   
+  checkAll("Interval", semigroup.laws[Interval])
   checkAll("Interval", equal.laws[Interval])
 
   checkAll("LocalDate", enum.laws[LocalDate])
