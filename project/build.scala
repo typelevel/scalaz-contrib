@@ -113,8 +113,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       publishArtifact := false
     ),
-    // TODO 2.11 build for lift
-    aggregate = Seq(/*lift,*/ spire, validationExtension, undo, nscalatime)
+    aggregate = Seq(lift, spire, validationExtension, undo, nscalatime)
   )
 
   lazy val spire = Project(
@@ -138,7 +137,7 @@ object ScalazContribBuild extends Build {
     settings = standardSettings ++ Seq(
       name := "scalaz-lift",
       libraryDependencies ++= Seq(
-        "net.liftweb" %% "lift-common" % "2.5.1",
+        "net.liftweb" %% "lift-common" % "2.6-RC1",
         scalazSpecs2,
         scalazScalacheck
       )
