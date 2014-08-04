@@ -40,7 +40,7 @@ trait BasicValidators {
   def notEmpty[E](e: => E) = lengthIs(_ > 0, e)
 
   def lengthIs[E](lf: Int => Boolean, f: => E) = new {
-    def apply[T](t: T)(implicit L: Unapply[Length, T]): Option[E] =
+    def apply[T](t: T)(implicit L: Unapply[Foldable, T]): Option[E] =
       !lf(L.TC.length(L(t))) option f
   }
 

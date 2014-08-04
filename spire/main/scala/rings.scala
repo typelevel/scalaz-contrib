@@ -2,6 +2,7 @@ package scalaz.contrib
 package spire
 
 import scalaz.@@
+import scalaz.Tag
 import scalaz.Tags.Multiplication
 
 import _root_.spire.algebra
@@ -35,7 +36,7 @@ object Rings {
     override def asSpire = new SpireSemiring {}
 
     trait SpireSemiring extends algebra.Semiring[F] {
-      def times(x: F, y: F) = mulAsScalaz.append(Multiplication(x), Multiplication(y))
+      def times(x: F, y: F) = Tag.unwrap(mulAsScalaz.append(Multiplication(x), Multiplication(y)))
       def plus(x: F, y: F) = addAsScalaz.append(x, y)
       def zero = addAsScalaz.zero
     }
@@ -56,7 +57,7 @@ object Rings {
     override def asSpire = new SpireRig {}
 
     trait SpireRig extends algebra.Rig[F] with SpireSemiring {
-      def one = mulAsScalaz.zero
+      def one = Tag.unwrap(mulAsScalaz.zero)
     }
   }
 

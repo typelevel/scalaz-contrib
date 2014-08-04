@@ -2,6 +2,7 @@ package scalaz.contrib
 package spire
 
 import scalaz.@@
+import scalaz.Tag
 import scalaz.Tags.Multiplication
 
 import _root_.spire.algebra
@@ -21,7 +22,7 @@ object MultiplicativeGroups {
     override def asScalaz = new ScalazSemigroup {}
 
     trait ScalazSemigroup extends scalaz.Semigroup[F @@ Multiplication] {
-      def append(f1: F @@ Multiplication, f2: => F @@ Multiplication) = Multiplication(asSpire.times(f1, f2))
+      def append(f1: F @@ Multiplication, f2: => F @@ Multiplication) = Multiplication(asSpire.times(Tag.unwrap(f1), Tag.unwrap(f2)))
     }
   }
 
@@ -29,7 +30,7 @@ object MultiplicativeGroups {
     override def asSpire = new SpireSemigroup {}
 
     trait SpireSemigroup extends algebra.MultiplicativeSemigroup[F] {
-      def times(x: F, y: F) = asScalaz.append(Multiplication(x), Multiplication(y))
+      def times(x: F, y: F) = Tag.unwrap(asScalaz.append(Multiplication(x), Multiplication(y)))
     }
   }
 
@@ -49,7 +50,7 @@ object MultiplicativeGroups {
     override def asSpire = new SpireMonoid {}
 
     trait SpireMonoid extends algebra.MultiplicativeMonoid[F] with SpireSemigroup {
-      def one = asScalaz.zero
+      def one = Tag.unwrap(asScalaz.zero)
     }
   }
 
