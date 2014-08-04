@@ -114,21 +114,7 @@ object ScalazContribBuild extends Build {
       publishArtifact := false
     ),
     // TODO 2.11 build for lift
-    aggregate = Seq(scala210, /*lift,*/ spire, validationExtension, undo, nscalatime)
-  )
-
-  lazy val scala210 = Project(
-    id = "scala210",
-    base = file("scala210"),
-    settings = standardSettings ++ Seq(
-      name := "scalaz-contrib-210",
-      libraryDependencies ++= Seq(
-        specs2,
-        scalazSpecs2,
-        scalacheck,
-        scalazScalacheck
-      )
-    )
+    aggregate = Seq(/*lift,*/ spire, validationExtension, undo, nscalatime)
   )
 
   lazy val spire = Project(
@@ -196,5 +182,3 @@ object ScalazContribBuild extends Build {
   )
 
 }
-
-// vim: expandtab:ts=2:sw=2
