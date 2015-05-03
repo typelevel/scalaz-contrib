@@ -1,4 +1,4 @@
 package scalaz.contrib
 
 package object nscala_time
-  extends Instances
+  extends Instances with ShowInstances
