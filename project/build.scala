@@ -147,7 +147,7 @@ object ScalazContribBuild extends Build {
     id = "nscala_time",
     base = file("nscala-time"),
     settings = standardSettings ++ Seq(
-      name := "scalaz-nscala-time",
+      name := "scalaz-nscala-time-gcsi",
       libraryDependencies ++= Seq(
         "joda-time" % "joda-time" % "2.+",
         scalazSpecs2,
